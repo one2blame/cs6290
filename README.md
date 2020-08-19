@@ -4,4 +4,4 @@ This course covers modern computer architecture, including branch prediction, ou
 
 ## References
 
-[https://omscs.gatech.edu/cs-6290-high-performance-computer-architecture](https://omscs.gatech.edu/cs-6290-high-performance-computer-architecture)
+* [https://omscs.gatech.edu/cs-6290-high-performance-computer-architecture](https://omscs.gatech.edu/cs-6290-high-performance-computer-architecture)
