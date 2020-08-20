@@ -1,0 +1,6 @@
+[book]
+authors = ["aheath9"]
+language = "en"
+multilingual = false
+src = "src"
+title = "CS6290: High Performance Computer Architecture"
