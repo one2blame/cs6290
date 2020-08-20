@@ -1,4 +1,4 @@
-# Introduction
+# Welcome
 
 This notebook contains my personal notes for CS6290: High Performance Computer
 Architecture offered at the Georgia Institute of Technology. A summary of the
