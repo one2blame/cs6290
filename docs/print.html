@@ -1,0 +1,341 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>CS6290: High Performance Computer Architecture</title>
+        
+        <meta name="robots" content="noindex" />
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">CS6290: High Performance Computer Architecture</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#welcome" id="welcome">Welcome</a></h1>
+<p>This notebook contains my personal notes for CS6290: High Performance Computer
+Architecture offered at the Georgia Institute of Technology. A summary of the
+course follows:</p>
+<p>This course covers modern computer architecture, including branch prediction,
+out-of-order instruction execution, cache optimizations, multi-level caches,
+memory and storage, cache coherence and consistency, and multi- and many-core
+processors.</p>
+<h2><a class="header" href="#course-links" id="course-links">Course links</a></h2>
+<ul>
+<li><a href="https://omscs.gatech.edu/cs-6290-high-performance-computer-architecture">https://omscs.gatech.edu/cs-6290-high-performance-computer-architecture</a></li>
+<li><a href="https://ebookcentral-proquest-com.prx.library.gatech.edu/lib/gatech/detail.action?docID=787253">https://ebookcentral-proquest-com.prx.library.gatech.edu/lib/gatech/detail.action?docID=787253</a></li>
+</ul>
+<h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
+<h2><a class="header" href="#what-is-computer-architecture" id="what-is-computer-architecture">What is computer architecture?</a></h2>
+<p>We can think of computer architecture similar to how architecture is considered
+for building. Buildings are designed to be well-suited for a specific purpose.
+The same can be said of computers, as we design different computers for
+different purposes. Some examples are desktop computers, laptops, and
+cellphones; they all have different purposes and require different computer
+architectures.</p>
+<p><img src="lesson1/./img/what-is-computer-architecture.png" alt="what-is-computer-architecture" /></p>
+<h2><a class="header" href="#why-do-we-need-computer-architecture" id="why-do-we-need-computer-architecture">Why do we need computer architecture?</a></h2>
+<ol>
+<li>To improve performance based upon some specific measure. These measures
+could include:</li>
+</ol>
+<ul>
+<li>Speed</li>
+<li>Battery life</li>
+<li>Size</li>
+<li>Weight</li>
+<li>Energy efficiency, etc.</li>
+</ul>
+<ol start="2">
+<li>To improve the abilities provided by a computer. These abilities could include:</li>
+</ol>
+<ul>
+<li>3D graphics</li>
+<li>Debugging support</li>
+<li>Security, etc.</li>
+</ul>
+<p>The first need for computer architecture is about making computers cheaper,
+faster, smaller, etc. while the second need is based around making new things
+possible/providing new functionality. Computer architecture utilizes discoveries
+in fabrication technology and circuit design to achieve the goals stated above.</p>
+<p><img src="lesson1/./img/why-do-we-need-computer-architecture.png" alt="why-do-we-need-computer-architecture" /></p>
+<h2><a class="header" href="#computer-architecture-and-technology-trends" id="computer-architecture-and-technology-trends">Computer architecture and technology trends</a></h2>
+<p>Computer architecture is about building future computers. The progress in
+computer manufacturing technology is fast. We shouldn't design a new computer
+with current technology and parts. By the time we've designed our new computer,
+it's obsolete and using old technology. We need to track technology trends in
+order to predict what's available in the future, allowing us to better design a
+new computer using these new technologies.</p>
+<p><img src="lesson1/./img/computer-arch-tech-trends.png" alt="computer-arch-tech-trends" /></p>
+<h2><a class="header" href="#moores-law" id="moores-law">Moore's law</a></h2>
+<p>Moore's law provides a good starting point for predicting what future computers
+will look like based upon what is currently available today. As computer
+architects, we can use these predictions to guide our expectations of what
+technologies will be available for use when designing future computers. Below is
+a high-level summary of Moore's law:</p>
+<p><img src="lesson1/./img/moores-law.png" alt="moores-law" /></p>
+<h2><a class="header" href="#the-memory-wall" id="the-memory-wall">The memory wall</a></h2>
+<p>Processor speed doubles almost every two years, while memory capacity also
+experiences the same phenomenon. Memory latency, however, has not kept pace with
+processor speed and memory capacity. This is what's called the memory wall and,
+in order to mitigate these differences in speed when processors need to access
+memory, we have been using caches to close that gap. Caches can be thought of as
+a series of stairs for memory access speed, and cache misses are the base of the
+staircase with the slowest memory access speed possible. A high-level
+illustration of the memory wall trend is provided below:</p>
+<p><img src="lesson1/./img/memory-wall.png" alt="memory-wall" /></p>
+<h2><a class="header" href="#power-consumption" id="power-consumption">Power consumption</a></h2>
+<p>There are two kinds of power that a processor consumes:</p>
+<ul>
+<li>Dynamic (active) power - consumed by activity in a circuit</li>
+<li>Static power - consumed when powered on but idle</li>
+</ul>
+<h3><a class="header" href="#active-power" id="active-power">Active power</a></h3>
+<p>Below is an illustrative representation of the equation for calculating active
+power consumption by a processor. The representation also displays how we can
+calculate the change in active power consumption when a different chip
+configuration is used, and if voltage and chip frequency are changed. An
+explanation of each variable in the active power equation follows:</p>
+<ul>
+<li>capacitance - roughly proportional to chip area / larger chips will have more
+capacitance</li>
+<li>voltage - quadratic relationship between voltage and power consumption</li>
+<li>frequency - clock frequency (GHz) of a processor</li>
+<li>alpha - activity factor (percentage of processor transistors active for any
+given clock cycle)</li>
+</ul>
+<p><img src="lesson1/./img/active-power.png" alt="active-power" /></p>
+<h3><a class="header" href="#static-power" id="static-power">Static power</a></h3>
+<p>Static power is power consumed while the processor is idle. Some of this is due
+to the voltage being too low to prevent transistors from leaking/wasting energy,
+but it can also come from other sources as well. Below is a high-level
+representation identifying the relationship between static and active power as
+voltage increases or decreases in the circuit. This representation also
+identifies that there is some optimal voltage settings for circuits to avoid
+utilize too much power in bot the active and static states.</p>
+<p><img src="lesson1/./img/static-power.png" alt="static-power" /></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
