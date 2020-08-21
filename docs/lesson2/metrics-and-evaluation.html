@@ -3,9 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title></title>
-        
-        <meta name="robots" content="noindex" />
+        <title>Metrics and Evaluation</title>
         
         
 
@@ -20,26 +18,26 @@
         <meta name="theme-color" content="#ffffff" />
 
         
-        <link rel="icon" href="favicon.svg">
+        <link rel="icon" href="../favicon.svg">
         
         
-        <link rel="shortcut icon" href="favicon.png">
+        <link rel="shortcut icon" href="../favicon.png">
         
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
         
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
         
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         
@@ -49,7 +47,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -95,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html" class="active"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -130,7 +128,7 @@
                     <h1 class="menu-title"></h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         
@@ -161,125 +159,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#welcome" id="welcome">Welcome</a></h1>
-<p>This notebook contains my personal notes for CS6290: High Performance Computer
-Architecture offered at the Georgia Institute of Technology. A summary of the
-course follows:</p>
-<p>This course covers modern computer architecture, including branch prediction,
-out-of-order instruction execution, cache optimizations, multi-level caches,
-memory and storage, cache coherence and consistency, and multi- and many-core
-processors.</p>
-<h2><a class="header" href="#course-links" id="course-links">Course links</a></h2>
-<ul>
-<li><a href="https://omscs.gatech.edu/cs-6290-high-performance-computer-architecture">https://omscs.gatech.edu/cs-6290-high-performance-computer-architecture</a></li>
-<li><a href="https://ebookcentral-proquest-com.prx.library.gatech.edu/lib/gatech/detail.action?docID=787253">https://ebookcentral-proquest-com.prx.library.gatech.edu/lib/gatech/detail.action?docID=787253</a></li>
-</ul>
-<h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
-<h2><a class="header" href="#what-is-computer-architecture" id="what-is-computer-architecture">What is computer architecture?</a></h2>
-<p>We can think of computer architecture similar to how architecture is considered
-for building. Buildings are designed to be well-suited for a specific purpose.
-The same can be said of computers, as we design different computers for
-different purposes. Some examples are desktop computers, laptops, and
-cellphones; they all have different purposes and require different computer
-architectures.</p>
-<p><img src="lesson1/./img/what-is-computer-architecture.png" alt="what-is-computer-architecture" /></p>
-<h2><a class="header" href="#why-do-we-need-computer-architecture" id="why-do-we-need-computer-architecture">Why do we need computer architecture?</a></h2>
-<ol>
-<li>To improve performance based upon some specific measure. These measures
-could include:</li>
-</ol>
-<ul>
-<li>Speed</li>
-<li>Battery life</li>
-<li>Size</li>
-<li>Weight</li>
-<li>Energy efficiency, etc.</li>
-</ul>
-<ol start="2">
-<li>To improve the abilities provided by a computer. These abilities could include:</li>
-</ol>
-<ul>
-<li>3D graphics</li>
-<li>Debugging support</li>
-<li>Security, etc.</li>
-</ul>
-<p>The first need for computer architecture is about making computers cheaper,
-faster, smaller, etc. while the second need is based around making new things
-possible/providing new functionality. Computer architecture utilizes discoveries
-in fabrication technology and circuit design to achieve the goals stated above.</p>
-<p><img src="lesson1/./img/why-do-we-need-computer-architecture.png" alt="why-do-we-need-computer-architecture" /></p>
-<h2><a class="header" href="#computer-architecture-and-technology-trends" id="computer-architecture-and-technology-trends">Computer architecture and technology trends</a></h2>
-<p>Computer architecture is about building future computers. The progress in
-computer manufacturing technology is fast. We shouldn't design a new computer
-with current technology and parts. By the time we've designed our new computer,
-it's obsolete and using old technology. We need to track technology trends in
-order to predict what's available in the future, allowing us to better design a
-new computer using these new technologies.</p>
-<p><img src="lesson1/./img/computer-arch-tech-trends.png" alt="computer-arch-tech-trends" /></p>
-<h2><a class="header" href="#moores-law" id="moores-law">Moore's law</a></h2>
-<p>Moore's law provides a good starting point for predicting what future computers
-will look like based upon what is currently available today. As computer
-architects, we can use these predictions to guide our expectations of what
-technologies will be available for use when designing future computers. Below is
-a high-level summary of Moore's law:</p>
-<p><img src="lesson1/./img/moores-law.png" alt="moores-law" /></p>
-<h2><a class="header" href="#the-memory-wall" id="the-memory-wall">The memory wall</a></h2>
-<p>Processor speed doubles almost every two years, while memory capacity also
-experiences the same phenomenon. Memory latency, however, has not kept pace with
-processor speed and memory capacity. This is what's called the memory wall and,
-in order to mitigate these differences in speed when processors need to access
-memory, we have been using caches to close that gap. Caches can be thought of as
-a series of stairs for memory access speed, and cache misses are the base of the
-staircase with the slowest memory access speed possible. A high-level
-illustration of the memory wall trend is provided below:</p>
-<p><img src="lesson1/./img/memory-wall.png" alt="memory-wall" /></p>
-<h2><a class="header" href="#power-consumption" id="power-consumption">Power consumption</a></h2>
-<p>There are two kinds of power that a processor consumes:</p>
-<ul>
-<li>Dynamic (active) power - consumed by activity in a circuit</li>
-<li>Static power - consumed when powered on but idle</li>
-</ul>
-<h3><a class="header" href="#active-power" id="active-power">Active power</a></h3>
-<p>Below is an illustrative representation of the equation for calculating active
-power consumption by a processor. The representation also displays how we can
-calculate the change in active power consumption when a different chip
-configuration is used, and if voltage and chip frequency are changed. An
-explanation of each variable in the active power equation follows:</p>
-<ul>
-<li>capacitance - roughly proportional to chip area / larger chips will have more
-capacitance</li>
-<li>voltage - quadratic relationship between voltage and power consumption</li>
-<li>frequency - clock frequency (GHz) of a processor</li>
-<li>alpha - activity factor (percentage of processor transistors active for any
-given clock cycle)</li>
-</ul>
-<p><img src="lesson1/./img/active-power.png" alt="active-power" /></p>
-<h3><a class="header" href="#static-power" id="static-power">Static power</a></h3>
-<p>Static power is power consumed while the processor is idle. Some of this is due
-to the voltage being too low to prevent transistors from leaking/wasting energy,
-but it can also come from other sources as well. Below is a high-level
-representation identifying the relationship between static and active power as
-voltage increases or decreases in the circuit. This representation also
-identifies that there is some optimal voltage settings for circuits to avoid
-utilize too much power in bot the active and static states.</p>
-<p><img src="lesson1/./img/static-power.png" alt="static-power" /></p>
-<h2><a class="header" href="#fabrication-cost-and-yield" id="fabrication-cost-and-yield">Fabrication cost and yield</a></h2>
-<p>The cost to manufacture and convert silicone wafers to useable computer chips
-is pretty much static. We, primarily, have to account for chip yield when a
-silicone wafer is divided into a number computer chips - some of these chips
-can have defects while others work fine. Below is high-level representation of
-the silicone wafer to computer chip manufacturing process, and how the yield
-is derived based upon the number of defects in wafer versus the number of chips
-extracted from a wafer.</p>
-<p><img src="lesson1/./img/fab-yield.png" alt="fab-yield" /></p>
-<p>Below is an example of how we can calculate the fabrication cost per chip
-based upon chip size. Smaller chips cost less to manufacture, while larger chips
-cost the most. Smaller chips, over time according to Moore's Law, will be able
-to do more for less as we are able to fit smaller transistors onto the chips.
-Larger chips will be able to remain the same size and cost, however, they will
-be faster overall due to Moore's Law.</p>
-<p><img src="lesson1/./img/fab-cost.png" alt="fab-cost" /></p>
-<h1><a class="header" href="#metrics-and-evaluation" id="metrics-and-evaluation">Metrics and Evaluation</a></h1>
+                        <h1><a class="header" href="#metrics-and-evaluation" id="metrics-and-evaluation">Metrics and Evaluation</a></h1>
 <p>This lesson covers latency and throughput, two metrics used to measure computer
 performance.</p>
 <h2><a class="header" href="#performance" id="performance">Performance</a></h2>
@@ -291,7 +171,7 @@ place concurrently within a pipeline, this can be thought of as the number of
 operations completed per unit measure of time.</li>
 </ul>
 <p>Below is a high-level representation of this concept.</p>
-<p><img src="lesson2/./img/latency-throughput.png" alt="latency-throughput" /></p>
+<p><img src="./img/latency-throughput.png" alt="latency-throughput" /></p>
 <h2><a class="header" href="#comparing-performance" id="comparing-performance">Comparing performance</a></h2>
 <p>Knowing how to measure performance, we can now compare the performance of two
 systems using our metrics. We want to be able to make a definitive statement
@@ -300,14 +180,14 @@ stating that system <strong>x</strong> is faster than system <strong>y</strong>.
 both <strong>latency</strong> and <strong>throughput</strong>, however, our equations are slightly
 different. Below is an image showing us the equations for computing <strong>speedup</strong>
 using our two metrics.</p>
-<p><img src="lesson2/./img/comparing-performance.png" alt="comparing-performance" /></p>
+<p><img src="./img/comparing-performance.png" alt="comparing-performance" /></p>
 <h2><a class="header" href="#speedup" id="speedup">Speedup</a></h2>
 <p>A <strong>speedup</strong> value larger than 1 means we have improved performance. With
 improved performance, we achieve higher throughput and shorter execution time. A
 speedup less than 1 means that we have worse performance. When computing
 speedup, we need to remember that performance is directly proportional to
 throughput and performance has an inverse relationship with latency.</p>
-<p><img src="lesson2/./img/speedup.png" alt="speedup" /></p>
+<p><img src="./img/speedup.png" alt="speedup" /></p>
 <h2><a class="header" href="#measuring-performance" id="measuring-performance">Measuring performance</a></h2>
 <p>What workload do we use to measure performance of different systems? We can't
 use an actual user workload because:</p>
@@ -366,14 +246,14 @@ groups, and experts in academia and these organizations produce standard
 benchmark suites. Some well known standard benchmark suites are:</p>
 <ul>
 <li><strong>TPC</strong> - Benchmarks used for databases, web servers, data mining, and other
-transaction processing. <a href="lesson2/metrics-and-evaluation.html#references">[1]</a></li>
-<li><strong>EEMBC</strong> - Used for embedded processing. <a href="lesson2/metrics-and-evaluation.html#preferences">[2]</a></li>
+transaction processing. <a href="#references">[1]</a></li>
+<li><strong>EEMBC</strong> - Used for embedded processing. <a href="#preferences">[2]</a></li>
 <li><strong>SPEC</strong> - Used to evaluate engineering work stations and raw processors. SPEC
 encompasses a large set of workloads, trying to cover a variety of uses for
 processors in high performance systems. A breakdown of these workloads is in the
-image below. <a href="lesson2/metrics-and-evaluation.html#preferences">[3]</a></li>
+image below. <a href="#preferences">[3]</a></li>
 </ul>
-<p><img src="lesson2/./img/benchmark-standard.png" alt="benchmark-standard" /></p>
+<p><img src="./img/benchmark-standard.png" alt="benchmark-standard" /></p>
 <h2><a class="header" href="#summarizing-performance" id="summarizing-performance">Summarizing performance</a></h2>
 <p>To summarize performance, we are looking for the <strong>average execution time</strong>.
 A demonstration on how to calculate this is shown below. We should refrain from
@@ -381,7 +261,7 @@ averaging the speedups for each application tested - averaging ratios will not
 provide useable data to summarize performance. In order to acquire the average
 speedup, we need to use the <strong>geometric mean</strong> for the execution times of each
 computer.</p>
-<p><img src="lesson2/./img/summarizing-performance.png" alt="summarizing-performance" /></p>
+<p><img src="./img/summarizing-performance.png" alt="summarizing-performance" /></p>
 <h2><a class="header" href="#iron-law-of-performance" id="iron-law-of-performance">Iron Law of performance</a></h2>
 <p>Processor time (CPU time) can be expressed as:
 <code>(instructions/program) * (cycles/instruction) * (seconds/cycles)</code></p>
@@ -400,7 +280,7 @@ transistor physics.</li>
 <p>Computer architecture primarily focuses on instruction set and processor design,
 and good designs of these two aspects attempts to balance their effects on
 CPU time.</p>
-<p><img src="lesson2/./img/iron-law.png" alt="iron-law" /></p>
+<p><img src="./img/iron-law.png" alt="iron-law" /></p>
 <h2><a class="header" href="#iron-law-for-unequal-instruction-times" id="iron-law-for-unequal-instruction-times">Iron Law for unequal instruction times</a></h2>
 <p>It's pretty simple to calculate CPU times when we assume that all instructions
 for a program will take the same amount of cycles to execute. This isn't always
@@ -408,10 +288,10 @@ the case, however. We need to be able to sum all the cycles for each type of
 instruction before we multiply this with our time per cycle. Below is a
 representation of this concept, showing us how to calculate a more realistic
 CPU time.</p>
-<p><img src="lesson2/./img/iron-law-unequal.png" alt="iron-law-unequal" /></p>
+<p><img src="./img/iron-law-unequal.png" alt="iron-law-unequal" /></p>
 <p>Below is an example problem in which we calculate the sum of cycles for a
 program in order to determine the CPU time.</p>
-<p><img src="lesson2/./img/iron-law-quiz.png" alt="iron-law-quiz" /></p>
+<p><img src="./img/iron-law-quiz.png" alt="iron-law-quiz" /></p>
 <h2><a class="header" href="#amdahls-law" id="amdahls-law">Amdahl's Law</a></h2>
 <p>This law is useful when we need to calculate the overall speedup of the entire
 program, but we only enhanced a fraction of the program. Below is an image
@@ -424,21 +304,21 @@ variable in the equation is provided:</p>
 </ul>
 <p>It's very important to understand that <code>frac_enh</code> is a percentage of the
 original execution time that is affected by the enhancement.</p>
-<p><img src="lesson2/./img/amdahls-law.png" alt="amdahls-law" /></p>
+<p><img src="./img/amdahls-law.png" alt="amdahls-law" /></p>
 <h3><a class="header" href="#implications" id="implications">Implications</a></h3>
 <p>It's important to aim for enhancements that achieve a speedup on a larger
 percentage of execution time for a program. This is demonstrated mathematically
 below.</p>
-<p><img src="lesson2/./img/amdahls-law-implications.png" alt="amdahls-law-implications" /></p>
+<p><img src="./img/amdahls-law-implications.png" alt="amdahls-law-implications" /></p>
 <p>Below is an example of how to use Amdahl's Law to compare multiple possible
 improvements.</p>
-<p><img src="lesson2/./img/amdahls-law-quiz.png" alt="amdahls-law-quiz" /></p>
+<p><img src="./img/amdahls-law-quiz.png" alt="amdahls-law-quiz" /></p>
 <h2><a class="header" href="#lhadmas-law" id="lhadmas-law">Lhadma's Law</a></h2>
 <p>This law is jokingly used to express the opposite of Amdahl's Law. While
 Amdahl's Law says to optimize for the common case, Lhadma's warns us that we
 should avoid attempting to optimize too much at the expense of other parts of
 our performance. An example is provided below.</p>
-<p><img src="lesson2/./img/lhadmas-law.png" alt="lhadmas-law" /></p>
+<p><img src="./img/lhadmas-law.png" alt="lhadmas-law" /></p>
 <h2><a class="header" href="#diminishing-returns" id="diminishing-returns">Diminishing returns</a></h2>
 <p>This concept covers the idea that as computer architects, we need to
 continuously review what needs to be enhanced within a system instead of
@@ -448,7 +328,7 @@ system will become smaller as we apply enhancements across generations. We will
 achieve a diminished speedup if we continue to enhance the same portion of the
 system. We need to continually reassess what is the common case when conducting
 our enhancements. Below is a high level representation of this idea.</p>
-<p><img src="lesson2/./img/diminishing-returns.png" alt="diminishing-returns" /></p>
+<p><img src="./img/diminishing-returns.png" alt="diminishing-returns" /></p>
 <h2><a class="header" href="#references" id="references">References</a></h2>
 <ol>
 <li><a href="http://www.tpc.org/tpch/">http://www.tpc.org/tpch/</a></li>
@@ -461,6 +341,10 @@ our enhancements. Below is a high level representation of this idea.</p>
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
+                            <a rel="prev" href="../lesson1/introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
 
                         
 
@@ -470,6 +354,10 @@ our enhancements. Below is a high level representation of this idea.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../lesson1/introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
                 
 
                 
@@ -507,26 +395,18 @@ our enhancements. Below is a high level representation of this idea.</p>
         
 
         
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
         
 
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         
 
-        
-        
-        <script type="text/javascript">
-        window.addEventListener('load', function() {
-            window.setTimeout(window.print, 100);
-        });
-        </script>
-        
         
 
     </body>
