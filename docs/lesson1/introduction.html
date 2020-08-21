@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - CS6290: High Performance Computer Architecture</title>
+        <title>Introduction</title>
         
         
 
@@ -125,7 +125,7 @@
                         
                     </div>
 
-                    <h1 class="menu-title">CS6290: High Performance Computer Architecture</h1>
+                    <h1 class="menu-title"></h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -248,6 +248,22 @@ voltage increases or decreases in the circuit. This representation also
 identifies that there is some optimal voltage settings for circuits to avoid
 utilize too much power in bot the active and static states.</p>
 <p><img src="./img/static-power.png" alt="static-power" /></p>
+<h2><a class="header" href="#fabrication-cost-and-yield" id="fabrication-cost-and-yield">Fabrication cost and yield</a></h2>
+<p>The cost to manufacture and convert silicone wafers to useable computer chips
+is pretty much static. We, primarily, have to account for chip yield when a
+silicone wafer is divided into a number computer chips - some of these chips
+can have defects while others work fine. Below is high-level representation of
+the silicone wafer to computer chip manufacturing process, and how the yield
+is derived based upon the number of defects in wafer versus the number of chips
+extracted from a wafer.</p>
+<p><img src="./img/fab-yield.png" alt="fab-yield" /></p>
+<p>Below is an example of how we can calculate the fabrication cost per chip
+based upon chip size. Smaller chips cost less to manufacture, while larger chips
+cost the most. Smaller chips, over time according to Moore's Law, will be able
+to do more for less as we are able to fit smaller transistors onto the chips.
+Larger chips will be able to remain the same size and cost, however, they will
+be faster overall due to Moore's Law.</p>
+<p><img src="./img/fab-cost.png" alt="fab-cost" /></p>
 
                     </main>
 

@@ -99,3 +99,24 @@ identifies that there is some optimal voltage settings for circuits to avoid
 utilize too much power in bot the active and static states.
 
 ![static-power](./img/static-power.png)
+
+## Fabrication cost and yield
+
+The cost to manufacture and convert silicone wafers to useable computer chips
+is pretty much static. We, primarily, have to account for chip yield when a
+silicone wafer is divided into a number computer chips - some of these chips
+can have defects while others work fine. Below is high-level representation of
+the silicone wafer to computer chip manufacturing process, and how the yield
+is derived based upon the number of defects in wafer versus the number of chips
+extracted from a wafer.
+
+![fab-yield](./img/fab-yield.png)
+
+Below is an example of how we can calculate the fabrication cost per chip
+based upon chip size. Smaller chips cost less to manufacture, while larger chips
+cost the most. Smaller chips, over time according to Moore's Law, will be able
+to do more for less as we are able to fit smaller transistors onto the chips.
+Larger chips will be able to remain the same size and cost, however, they will
+be faster overall due to Moore's Law.
+
+![fab-cost](./img/fab-cost.png)
