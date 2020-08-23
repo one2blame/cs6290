@@ -160,6 +160,53 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#pipelining" id="pipelining">Pipelining</a></h1>
+<p>This lesson reviews pipelining to set the stage for more advanced topics.</p>
+<h2><a class="header" href="#pipelining-in-a-processor" id="pipelining-in-a-processor">Pipelining in a processor</a></h2>
+<p>This section covers basic pipelining in a processor. Most processors are much
+more complex than the example provided here, however, this is used to review
+content for students.</p>
+<p>In a traditional processor pipeline, we have are series of stages. The following
+listing of stages is not <em>all</em> stages, but it encompasses the important ones:</p>
+<ul>
+<li><strong>fetch</strong></li>
+<li><strong>read</strong></li>
+<li><strong>decode</strong></li>
+<li><strong>execute</strong></li>
+<li><strong>memory access</strong></li>
+<li><strong>write</strong></li>
+</ul>
+<p>So how does pipelining apply to these stages? Instead of fetching, decoding, and
+executing one instruction at a time, while one instruction is being decoded,
+another instruction can be fetched from instruction memory. Then, when one
+instruction is being executed, we can be decoding the instruction behind it.
+So, while the latency may not change, the throughput of instructions through
+the pipeline increases. Below is a high level representation of this concept:</p>
+<p><img src="./img/pipelining-in-processor.png" alt="pipeline-in-processor" /></p>
+<p>Below is an example of calculating the latency of process with and without a
+pipeline.</p>
+<p><img src="./img/laundry-pipelining.png" alt="laundry-pipelining" /></p>
+<p>Below is a similar example as the one above, however, this one applies to
+instructions and cycles.</p>
+<p><img src="./img/instruction-pipelining.png" alt="instruction-pipelining" /></p>
+<h2><a class="header" href="#pipeline-cycles-per-instruction" id="pipeline-cycles-per-instruction">Pipeline cycles per instruction</a></h2>
+<p>Throughout these notes we've been assuming one cycle per instruction, or a CPI
+of 1, when our pipeline is full. In the real-world, however, we'll have billions
+of instructions to execute - will our CPI always be 1? Here are some reasons
+why our CPI might not be 1:</p>
+<ul>
+<li><strong>initial fill</strong> - when the pipeline initially fills up, our CPI will not be
+equal to 1. Regardless, as our instruction number reaches infinity, CPI will
+begin to approach 1.</li>
+<li><strong>pipeline stalls</strong> - there exists the possibility that a fault occurs in the
+pipeline and an instruction stalls, causing it to have to remain at that stage
+for a cycle.</li>
+</ul>
+<p>Below is a high-level representation of how a CPI can be greater than 1.</p>
+<p><img src="./img/pipeline-cpi.png" alt="pipeline-cpi" /></p>
+<h2><a class="header" href="#references" id="references">References</a></h2>
+<ol>
+<li><a href="./pdf/Lesson3Notes.pdf">Lesson 3 Notes</a></li>
+</ol>
 
                     </main>
 

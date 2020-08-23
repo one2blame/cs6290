@@ -202,3 +202,4 @@ our enhancements. Below is a high level representation of this idea.
 1. [http://www.tpc.org/tpch/](http://www.tpc.org/tpch/)
 2. [https://www.eembc.org/](https://www.eembc.org/)
 3. [https://www.spec.org/benchmarks.html](https://www.spec.org/benchmarks.html)
+4. [Lesson 2 Notes](./pdf/Lesson2Notes.pdf)

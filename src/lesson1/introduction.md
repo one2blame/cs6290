@@ -120,3 +120,7 @@ Larger chips will be able to remain the same size and cost, however, they will
 be faster overall due to Moore's Law.
 
 ![fab-cost](./img/fab-cost.png)
+
+## References
+
+1. [Lesson 1 Notes](./pdf/Lesson1Notes.pdf)
