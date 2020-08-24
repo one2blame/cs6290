@@ -203,6 +203,152 @@ for a cycle.</li>
 </ul>
 <p>Below is a high-level representation of how a CPI can be greater than 1.</p>
 <p><img src="./img/pipeline-cpi.png" alt="pipeline-cpi" /></p>
+<h2><a class="header" href="#processor-pipeline-stalls" id="processor-pipeline-stalls">Processor pipeline stalls</a></h2>
+<p>A processor pipeline stall usually occurs when some instructions depend upon the
+outcome of previous instructions that conduct a read/write. In the example
+below, the program loads a value into a register, increments the register, and
+then stores that value into a different register. The load operation must occur
+before the increment and load instruction, otherwise the increment instruction
+will be incrementing an incorrect value. Because of this dependency, a processor
+pipeline stall occurs, and a <strong>bubble</strong> in the pipeline is created. The
+increment instruction must wait two cycles until the memory is read and written
+into the register that is to be incremented.</p>
+<p>This phenomenon causes our CPI to be greater than 1.</p>
+<p><img src="./img/processor-pipeline-stalls.png" alt="processor-pipeline-stalls" /></p>
+<h2><a class="header" href="#processor-pipeline-stalls-and-flushes" id="processor-pipeline-stalls-and-flushes">Processor pipeline stalls and flushes</a></h2>
+<p>A processor pipeline flush occurs when the processor pipeline fetches and
+decodes instructions that aren't actually supposed to be executed, so they're
+removed from the pipeline and replaced with bubbles. Below is an example
+demonstrating what happens when a <code>JMP</code> instruction is introduced into the
+pipeline. Some instructions behind the <code>JMP</code> are fetched and decoded, however,
+they are fetched from an incorrect location in memory. After the <code>ALU</code>
+determines the destination of the <code>JMP</code>, instructions from the <code>JMP</code> destination
+are fetched and decoded, and the instructions that weren't destined to be
+executed are flushed from the pipeline.</p>
+<p>This is another phenomenon that could cause the CPI to be larger than 1.</p>
+<p><img src="./img/processor-pipeline-flushes.png" alt="processor-pipeline-flushes" /></p>
+<h2><a class="header" href="#control-dependencies" id="control-dependencies">Control dependencies</a></h2>
+<p>The problems described in the previous sections that cause these processor
+pipeline stalls are called <strong>control dependencies</strong>. The example provided below
+provides a high-level representation of a control dependency. In the scenario,
+a branch instruction will jump to some <strong>label</strong> in code, however, to sections
+of code depend upon the branch: the code directly after the branch and the code
+contained at the label.</p>
+<p>This example also shows us how to predict the CPI based upon this concept of
+control dependencies. Given a percentage of instructions are branches, given
+that a percentages of branches are actually taken, and given that we know that
+the fetching and decoding of control dependencies causes at least two bubbles in
+the pipeline, we can calculate the increase in CPI from its normal value of 1.</p>
+<p>In later discussions, we will cover a concept called <strong>branch prediction</strong> that
+is designed to mitigate the occurrence of these bubbles within the pipeline by
+predicting where a branch will land in order to fetch and decode the correct
+instructions. Control dependencies can cause even more bubbles to form in a
+pipeline if the pipeline contains more than 5 stages, so these issues definitely
+need to be mitigated to increase performance and normalize the CPI.</p>
+<p><img src="./img/control-dependencies.png" alt="control-dependencies" /></p>
+<p>Below is an example question from the lectures that asks us to determine the CPI
+given a percentage of branches/jumps taken and when the branches/jumps are
+computed in the pipeline.</p>
+<p><img src="./img/control-dependencies-quiz.png" alt="control-dependencies-quiz" /></p>
+<h2><a class="header" href="#data-dependencies" id="data-dependencies">Data dependencies</a></h2>
+<p>Briefly described in <a href="#processor-pipeline-stalls">this</a> section,
+<strong>data dependencies</strong> occur when one instruction depends upon the outcome of
+another instruction. TODO types of dependencies exist:</p>
+<ul>
+<li><strong>read after write (RAW)</strong> - type of dependency in which one instruction
+relies upon the previous instruction writing some data that will be used by the
+dependent instruction. This type of dependency is also called a <strong>flow</strong>
+dependence because the data flows from one instruction to the other. This type
+of dependency is also called a <strong>true</strong> dependency because the value being used
+by the dependent instruction doesn't exist until the previous instruction
+writes.</li>
+<li><strong>write after write (WAW)</strong> - type of dependency in which the order of write
+operations needs to be preserved. The example provided uses registers, in which
+a specific value is expected to be within <code>R1</code> for future instructions. These
+writes will not be able to to be conducted out of order - they both write to
+the same location. This type of dependency is also called an <strong>output</strong>
+dependency.</li>
+<li><strong>write after read (WAR)</strong> - type of dependency in which a previous
+instruction needs to read some data, but a future instruction intends to write
+to that data. These instructions can not be interleaved, the previous
+instruction expects the data to be unchanged upon read. The read will take place
+before the write, creating the dependency. This type of dependency is also
+called an <strong>anti-dependency</strong> because it reversed the <strong>RAW</strong> dependency.</li>
+</ul>
+<p>The <strong>WAW</strong> and <strong>WAR</strong> dependencies are called  <strong>false</strong> or <strong>named</strong>
+dependencies. <strong>Read after read (RAR)</strong> is not a dependency.</p>
+<p><img src="./img/data-dependencies.png" alt="data-dependencies" /></p>
+<p>Below is an example from the lectures inspecting a series of instructions to
+determine what data dependencies exist.</p>
+<p><img src="./img/data-dependencies-quiz.png" alt="data-dependencies-quiz" /></p>
+<h2><a class="header" href="#data-dependencies-and-hazards" id="data-dependencies-and-hazards">Data dependencies and hazards</a></h2>
+<p>A <strong>hazard</strong> is when a dependence results in incorrect execution of an
+instruction. In the example provided below, there are three instructions that
+have dependencies but their dependencies will not result in incorrect values
+being used for execution.</p>
+<p>The <code>DIV</code> instruction, however, will be using a <strong>stale</strong> value for <code>R4</code> when it
+executes and writes to <code>R10</code> because, when the <code>DIV</code> instruction reaches the
+<strong>decode</strong> stage of the pipeline, the <code>SUB</code> instruction has not yet written its
+value to <code>R4</code>.</p>
+<p>Hazards can both be a property of the program as well as because of the
+pipeline. Another example provided in the image below shows that, in this 5
+stage pipeline, true dependencies do not create a hazard when 3 or more
+instructions separate the dependent instructions. This is because, by the time
+the first instruction in the dependent pair executes and writes, the second
+dependent instruction is still being fetched.</p>
+<p><img src="./img/hazards.png" alt="hazards" /></p>
+<p>Below is an example problem with a 3 stage pipeline, demonstrating how we can
+inspect instructions to determine dependencies and hazards.</p>
+<p><img src="./img/hazards-quiz.png" alt="hazards-quiz" /></p>
+<h2><a class="header" href="#handling-of-hazards" id="handling-of-hazards">Handling of hazards</a></h2>
+<p>We need to introduce mechanisms to handle hazards we detect in order to protect
+our CPI and performance. We don't care about all dependencies that are
+introduced, only the ones we know will cause incorrect execution. These are our
+possible mitigation techniques:</p>
+<ul>
+<li><strong>Flush dependent instructions</strong> - used for control dependencies. We don't
+intend to execute instructions introduced into the pipeline by control
+dependencies.</li>
+<li><strong>Stall dependent instructions</strong> - used for data dependencies in order to
+prevent instructions from reading invalid values.</li>
+<li><strong>Fix values read by dependent instructions</strong> - also used for data
+dependencies, this introduces the concept of <strong>forwarding</strong>, providing the a
+dependent instruction with the value it needs to correctly decode and execute.</li>
+</ul>
+<p>Below is a high-level representation of these hazard handling mechanisms.</p>
+<p><img src="./img/handling-hazards.png" alt="handling-hazards" /></p>
+<p>Below is an example problem with a 5 stage pipeline and a series of instructions
+containing multiple dependencies and hazards that must be avoided. This example
+demonstrates how we can use the pipeline to determine when it is appropriate to
+flush, stall, or forward to handle hazards.</p>
+<p><img src="./img/handling-hazards-quiz.png" alt="handling-hazards-quiz" /></p>
+<h2><a class="header" href="#how-many-stages" id="how-many-stages">How many stages?</a></h2>
+<p>In the pipelines we've reviewed, the ideal CPI is 1. Later in the course,
+pipelines with a CPI higher than 1 are expected because the pipeline is
+attempting to execute more than one instruction per cycle. Regardless, each
+pipeline setup has an ideal CPI that it attempts to achieve.</p>
+<p>So what happens if we add more stages? Well, we get more hazards. If a branch
+is resolved in the third cycle of a pipeline, we only have to flush the two
+previous instructions that were fetched and decoded. If a branch is resolved
+in, for example, the tenth cycle of a pipeline, now 9 instructions have to be
+flushed from the pipeline - kinda wasteful. With more hazards, our CPI also
+increases.</p>
+<p>Inversely, with more stages in our pipeline there's less work being done per
+stage, decreasing our cycle time - we can execute cycles faster. Remember the
+Iron Law?</p>
+<p><code>CPU time = #instructions * CPI * cycle_time</code></p>
+<p>If our number of instructions stays the same, but our CPI increases and our
+cycle time decreases, we achieve a balance even with this longer pipeline. We
+carefully choose the number of stages in our pipeline to balance the
+relationship between CPI and cycle time.</p>
+<p>Modern processors achieve the most performance with a processor pipeline of
+30 - 40 stages as this strikes a perfect balance between cycle time and CPI.
+This is great, but with an increase in number or processor pipeline stages, we
+also draw a lot of power because we execute a lot of cycles per second. Thus,
+a reasonable number of stages for the processor pipeline of modern processors is
+10 - 15 stages as this strikes the best balance between performance and power.</p>
+<p>Below is a high-level representation of the concepts described above.</p>
+<p><img src="./img/how-many-stages.png" alt="how-many-stages" /></p>
 <h2><a class="header" href="#references" id="references">References</a></h2>
 <ol>
 <li><a href="./pdf/Lesson3Notes.pdf">Lesson 3 Notes</a></li>
