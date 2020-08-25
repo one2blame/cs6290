@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Welcome</title>
+        <title>Branches</title>
         
         
 
@@ -18,26 +18,26 @@
         <meta name="theme-color" content="#ffffff" />
 
         
-        <link rel="icon" href="favicon.svg">
+        <link rel="icon" href="../favicon.svg">
         
         
-        <link rel="shortcut icon" href="favicon.png">
+        <link rel="shortcut icon" href="../favicon.png">
         
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
         
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
         
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         
@@ -47,7 +47,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html" class="active">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html" class="active"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -128,7 +128,7 @@
                     <h1 class="menu-title"></h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         
@@ -159,28 +159,50 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#welcome" id="welcome">Welcome</a></h1>
-<p>This notebook contains my personal notes for CS6290: High Performance Computer
-Architecture offered at the Georgia Institute of Technology. A summary of the
-course follows:</p>
-<p>This course covers modern computer architecture, including branch prediction,
-out-of-order instruction execution, cache optimizations, multi-level caches,
-memory and storage, cache coherence and consistency, and multi- and many-core
-processors.</p>
-<h2><a class="header" href="#course-links" id="course-links">Course links</a></h2>
-<ul>
-<li><a href="https://omscs.gatech.edu/cs-6290-high-performance-computer-architecture">https://omscs.gatech.edu/cs-6290-high-performance-computer-architecture</a></li>
-<li><a href="https://ebookcentral-proquest-com.prx.library.gatech.edu/lib/gatech/detail.action?docID=787253">https://ebookcentral-proquest-com.prx.library.gatech.edu/lib/gatech/detail.action?docID=787253</a></li>
-</ul>
+                        <h1><a class="header" href="#branches" id="branches">Branches</a></h1>
+<p>In the previous <a href="../lesson3/pipelining.html">pipelining</a> lesson, we saw the
+effects that hazards have on performance. Branches and jumps are common
+instructions that introduce control dependencies - our only solution can't just
+be to flush the processor pipeline each time a branch or jump is decoded. This
+lesson covers techniques used to effectively avoid hazards introduced by control
+dependencies.</p>
+<h2><a class="header" href="#branch-in-a-pipeline" id="branch-in-a-pipeline">Branch in a pipeline</a></h2>
+<p>The example provided below uses a 5 stage processor pipeline to demonstrate the
+costs of incorrect branch prediction. The example explains how a branch
+instruction works: is registers <code>R1</code> and <code>R2</code> are equal, the immediate value
+represented by <code>Label</code> will be added to the program counter, <code>PC</code>, and execution
+will begin at that location in memory. Otherwise, the program counter will be
+incremented regularly - <code>R1</code> and <code>R2</code> are not equal.</p>
+<p>In this scenario, a branch instruction enters the pipeline at cycle 1. The
+branch instruction isn't evaluated until cycle 3 by the ALU. Meanwhile, two
+instructions are fetched and decoded - these are represented by a <code>??</code> because
+the instructions can be fetched either from memory directly after the branch
+instruction or the landing location in memory if the branch instruction is
+taken.</p>
+<p>If we predict the outcome of the branch instruction correctly, the instructions
+that were fetched and decoded will execute immediately after the branch
+instruction leaves the pipeline - the branch will have taken 1 cycle to
+complete. If we predicted the outcome of the branch incorrectly and loaded the
+wrong instructions into the pipeline, these instructions will have to be flushed
+and the branch will have taken 3 cycles to complete.</p>
+<p><img src="./img/branch-in-a-pipeline.png" alt="branch-in-a-pipeline" /></p>
+<h2><a class="header" href="#references" id="references">References</a></h2>
+<ol>
+<li><a href="./pdf/Lesson4Notes.pdf">Lesson 4 Notes</a></li>
+</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
+                            <a rel="prev" href="../lesson3/pipelining.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
 
                         
-                            <a rel="next" href="lesson1/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../lesson4/prediction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -192,9 +214,13 @@ processors.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
+                    <a rel="prev" href="../lesson3/pipelining.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
 
                 
-                    <a rel="next" href="lesson1/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../lesson4/prediction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
@@ -232,14 +258,14 @@ processors.</p>
         
 
         
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
         
 
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         
