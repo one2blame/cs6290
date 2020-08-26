@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -801,6 +801,217 @@ same way each time they are encountered.</p>
 but we can make a prediction based upon its history / the last time it was
 executed.</p>
 <p><img src="lesson4/./img/better-prediction-3.png" alt="better-prediction-3" /></p>
+<h1><a class="header" href="#branch-target-buffer-btb" id="branch-target-buffer-btb">Branch Target Buffer (BTB)</a></h1>
+<p>The simplest predictor that uses history is the <strong>branch target buffer</strong>. So
+how does it work? The program counter (PC) is used to index into the BTB.
+Stored at this index is the predicted next program counter. The next program
+counter is fetched into the pipeline. When the branch is calculated, the real
+next program counter is determined and compared against the predicted next
+program counter that was fetched. If they're the same, the BTB predicted the
+next program counter correctly based upon the historical data saved for the
+program counter used as an index. If they're not the same, the BTB predicted
+incorrectly and the next program counter is saved to the BTB using the index
+program counter.</p>
+<p><img src="lesson4/./img/branch-target-buffer.png" alt="branch-target-buffer" /></p>
+<p>How big does the BTB need to be to implement the predictor? Well it serves the
+purpose of predicting the next instruction based upon the current instruction
+in the program counter. So in order to feasibly predict every next instruction,
+we need to have an index for every instruction in the program - meaning the
+BTB needs to be the same size as the program itself! That's not realistic, let's
+see if we can't find another answer.</p>
+<p><img src="lesson4/./img/branch-target-buffer-size.png" alt="branch-target-buffer-size" /></p>
+<h2><a class="header" href="#realistic-btb" id="realistic-btb">Realistic BTB</a></h2>
+<p>First, we don't need an entry in the BTB for every single instruction in the
+program - we can have the BTB contain only the instructions that are most
+likely to be executed next. The BTB will operate somewhat like a cache, using
+values that are most recently used. An example provided in the lecture is a
+loop that contains, say, 100 instructions. As the loop executes, the BTB fills
+with the loop's instructions and the BTB doesn't change for the duration of the
+loop.</p>
+<p>So how do we avoid program counter index collisions in the BTB? We use a
+mapping function that's simple enough to execute within one cycle. In the
+example provided, if the BTB contains 1024 entries, we use the last 10 bits of
+our 64 bit program counters as indices. Why are we using the LSB of our program
+counters? Because as a program increments, these values are what changes when
+each instruction is executed.</p>
+<p><img src="lesson4/./img/realistic-btb.png" alt="realistic-btb" /></p>
+<h2><a class="header" href="#btb-quiz" id="btb-quiz">BTB Quiz</a></h2>
+<p>In the quiz below, we would think that we would just use the last 10 bits of the
+program counter, however, because our architecture enforces 4 bytes instructions
+that are word-aligned, each entry in the BTB needs to be even and also divisible
+by 4. So, in a BTB of 1024 entries, we would only be using 256 of the values -
+that's a lot of wasted entries.</p>
+<p>Our solution is to ignore the last 2 bits of the program counter and use the 10
+bits to the left of these ignored bits - these bits are the ones that are most
+likely to change. Using this indexing function, a program counter of
+<code>0x0000ab0c</code> will be contained at BTB index <code>0x2c3</code>.</p>
+<p><img src="lesson4/./img/btb-quiz.png" alt="btb-quiz" /></p>
+<h1><a class="header" href="#direction-predictor" id="direction-predictor">Direction Predictor</a></h1>
+<p>We further simplify our branch predictor by adding another abstraction, the
+<strong>branch history table</strong>. This table contains a <code>1</code> or <code>0</code> for each different
+program counter that indexes into it - we calculate indices just like we did
+with the BTB (using the LSBits of a program counter that are most likely to be
+unique).</p>
+<p>The <code>0</code> represents that the branch is not taken. The program counter is
+incremented and we begin fetching instructions from that location. No changes
+are made to the BTB because no branch was taken.</p>
+<p>The <code>1</code> represents that the branch is taken. The BTB is referenced to determine
+the next program counter based upon the current one being inspected, and we
+begin to fetch instructions from that new location.</p>
+<p>If the prediction made is incorrect, the branch history table is updated with
+the correct value at the index - <code>0</code> or <code>1</code>. If a not taken prediction was made
+and this prediction ended up being incorrect, we update the BTB with the next
+program counter that is the destination of the branch.</p>
+<p>Because the branch history table is only 1 bit for each index, we can have way
+more entries for unique program counters. This way, we can use the BTB only for
+branches and not just regular instructions.</p>
+<p><img src="lesson4/./img/direction-predictor.png" alt="direction-predictor" /></p>
+<h2><a class="header" href="#btb--bht-quiz" id="btb--bht-quiz">BTB &amp; BHT Quiz</a></h2>
+<p>The below quiz excerpt demonstrates that the BHT needs to be accessed for each
+instruction.</p>
+<p><img src="lesson4/./img/btb-bht-quiz.png" alt="btb-bht-quiz" /></p>
+<h2><a class="header" href="#btb--bht-quiz-2" id="btb--bht-quiz-2">BTB &amp; BHT Quiz 2</a></h2>
+<p>The below quiz excerpt demonstrates how the BHT is indexed using the program
+counter.</p>
+<p><img src="lesson4/./img/btb-bht-quiz-2.png" alt="btb-bht-quiz-2" /></p>
+<h2><a class="header" href="#btb--bht-quiz-3" id="btb--bht-quiz-3">BTB &amp; BHT Quiz 3</a></h2>
+<p>The below quiz excerpt demonstrates the conditions required to access the BTB.</p>
+<p><img src="lesson4/./img/btb-bht-quiz-3.png" alt="btb-bht-quiz-3" /></p>
+<h2><a class="header" href="#btb--bht-quiz-4" id="btb--bht-quiz-4">BTB &amp; BHT Quiz 4</a></h2>
+<p>The below quiz excerpt demonstrates how the BTB is indexed using the program
+counter.</p>
+<p><img src="lesson4/./img/btb-bht-quiz-4.png" alt="btb-bht-quiz-4" /></p>
+<h2><a class="header" href="#btb--bht-quiz-5" id="btb--bht-quiz-5">BTB &amp; BHT Quiz 5</a></h2>
+<p>The below quiz excerpt demonstrates how we can calculate the number of
+mis-predictions for each instruction using an imperfect BHT.</p>
+<p><img src="lesson4/./img/btb-bht-quiz-5.png" alt="btb-bht-quiz-5" /></p>
+<h2><a class="header" href="#problems-with-1-bit-prediction" id="problems-with-1-bit-prediction">Problems with 1 bit prediction</a></h2>
+<p>So what's wrong with the 1 bit predictor? Why does its performance not satisfy
+the needs of computer architecture designers, creating the need to research
+pattern predictors?</p>
+<p>The 1 bit predictor predicts these things well:</p>
+<ul>
+<li><strong>Branches that are always taken</strong></li>
+<li><strong>Branches that are always not taken</strong></li>
+<li><strong>Branches that are taken A LOT more often than not taken</strong></li>
+<li><strong>Branches that are not taken A LOT more often than taken</strong></li>
+</ul>
+<p>The example below demonstrates how, when a 1 bit predictor encounters an
+<strong>anomaly</strong> in predictions for a particular branch, this can incur two
+mis-predictions.</p>
+<p>The 1 bit predictor does not perform well when:</p>
+<ul>
+<li><strong>Branches are taken more often than not, but not by much</strong></li>
+<li><strong>Branches are not taken more often than not, but not by much</strong></li>
+<li><strong>Encountering short loops</strong></li>
+</ul>
+<p>The 1 bit predictor will be bad when:</p>
+<ul>
+<li><strong>Branches taken and not taken are about the same in number</strong></li>
+</ul>
+<p><img src="lesson4/./img/1-bit-predictor-problems.png" alt="1-bit-predictor-problems" /></p>
+<h1><a class="header" href="#2-bit-predictor" id="2-bit-predictor">2 Bit Predictor</a></h1>
+<p>A 2 bit predictor or 2 bit counter (2BP or 2BC) just adds another bit to the BHT
+to implement a state machine. The first bit in the 2BP is the prediction bit,
+and the second bit is called the <strong>hysteresis</strong> or conviction bit. These are the
+states of the 2BP:</p>
+<ul>
+<li><code>00</code> - strong not-taken state</li>
+<li><code>01</code> - weak not-taken state</li>
+<li><code>10</code> - weak taken state</li>
+<li><code>11</code> - strong taken state</li>
+</ul>
+<p>You can probably see where this is going. We start out in the strong not-taken
+state for a program counter. When we mis-predict that a branch is not-taken, we
+increment the hysteresis bit and transition to the weak not-taken state. We
+still don't take the branch until we are proven incorrectly again. A
+mis-prediction at this point will transition us to the weak taken state.</p>
+<p>So unlike the 1 bit predictor, our affinity to take or not take a branch doesn't
+flip as easily. This solves the problem we had earlier where, if we encountered
+an anomaly for a branch that is usually taken or not taken, we won't incur a
+penalty of two mis-predictions.</p>
+<p><img src="lesson4/./img/2-bit-predictor.png" alt="2-bit-predictor" /></p>
+<h2><a class="header" href="#2-bit-predictor-initialization" id="2-bit-predictor-initialization">2 Bit Predictor initialization</a></h2>
+<p>The below excerpt from the lectures demonstrates that it's a good idea to
+initialize the 2 bit predictor in a weak state, doesn't matter if it's taken or
+not taken. This is because, at program start, we don't know the history of the
+branches, yet, so starting in the weak state only incurs 1 mis-prediction
+penalty while starting in a strong state incurs 2.</p>
+<p>On the flip-side, if a branch flip-flops and we start in the weak state, we will
+incur a mis-prediction penalty every single time we encounter the branch. This
+isn't common behavior (fortunately).</p>
+<p>The evidence provided above would give you the idea that we should always init
+the 2 bit predictor in the weak state, but for the sake of practicality, it
+really doesn't matter and most 2 bit predictors are initialized at <code>00</code>.</p>
+<p><img src="lesson4/./img/2-bit-predictor-init.png" alt="2-bit-predictor-init" /></p>
+<h2><a class="header" href="#2-bit-predictor-quiz" id="2-bit-predictor-quiz">2 Bit Predictor Quiz</a></h2>
+<p>The below quiz excerpt from the lectures demonstrates how there is a worst-case
+scenario for the 2 bit predictor, showcasing a series of branches that will
+cause the predictor to mis-predict every branch.</p>
+<p>The moral of the story is, <strong>every</strong> predictor will have a worst-case scenario.
+A good predictor will make it difficult to find or generate this worst-case
+sequence of branches.</p>
+<p><img src="lesson4/./img/2-bit-predictor-quiz.png" alt="2-bit-predictor-quiz" /></p>
+<h2><a class="header" href="#1-bits-2-bits-what-else" id="1-bits-2-bits-what-else">1 bits, 2 bits... what else?</a></h2>
+<p>So we've seen that the 2 bit predictor is better than the 1 bit predictor at
+handling anomalous outcomes. Does this get better if we add 3 bits to the
+predictor? Well, maybe. Another bit will just increase the number of states,
+making it more difficult to transition to another prediction - this is useful
+if the anomalous behavior comes in streaks. This behavior is not common, however
+, in programs. Adding another bit imposes more cost, as it requires more space
+to store the information per program counter.</p>
+<p>A 2 bit predictor meets the needs we identified earlier of handling anomalous
+behavior, but what about that one case where the branch outcome kept
+flip-flopping? Since increasing the number of bits to solve this problem doesn't
+really do anything, what's the next solution?</p>
+<p><img src="lesson4/./img/2-bit-predictor-summary.png" alt="2-bit-predictor-summary" /></p>
+<h1><a class="header" href="#history-based-predictors" id="history-based-predictors">History Based Predictors</a></h1>
+<p>History Based Predictors are designed to recognize and learn patterns based
+upon the history of taken or not taken outcomes of a branch. Below is an example
+that provides a high-level representation of the concept. The flip-floppy
+branch outcomes are definitely predictable, just not with simple N-bit counters.</p>
+<p><img src="lesson4/./img/history-based-predictors.png" alt="history-based-predictors" /></p>
+<h2><a class="header" href="#1-bit-history-w-2bc" id="1-bit-history-w-2bc">1 Bit History w/ 2BC</a></h2>
+<p>Below is an excerpt from the lectures that provides a high-level representation
+of a BHT with 1 bit for history, and two 2BC's to manage the state for taken
+and not taken branch outcomes.</p>
+<p>What the 1 bit history 2BC BHT provides us is a predictor that is able to learn
+the pattern of a series of branch outcomes. The 1 bit history bit is used to
+index into the two 2BC's and, based upon the branch outcome, updates the state
+of each 2BC.</p>
+<p><img src="lesson4/./img/1-bit-history-2bc.png" alt="1-bit-history-2bc" /></p>
+<h2><a class="header" href="#1-bit-history-quiz" id="1-bit-history-quiz">1 Bit History Quiz</a></h2>
+<p>Below is an a quiz excerpt from the lectures demonstrating the calculation of
+the number of mis-predictions for a pattern of branch outcomes following the
+this pattern: <code>(NNT)*</code>. As we can see from the outcome of the calculations in
+the quiz, the 1 Bit History with two 2BC's is not a good solution for this
+pattern.</p>
+<p><img src="lesson4/./img/1-bit-history-2bc-quiz.png" alt="1-bit-history-2bc-quiz" /></p>
+<h2><a class="header" href="#2-bit-history-predictor" id="2-bit-history-predictor">2 Bit History Predictor</a></h2>
+<p>The 2 Bit History Predictor works very similar to the 1 Bit History Predictor,
+now we've just doubled the number of 2BCs. The 2 Bit History bits are used to
+index into the four 2BCs. The total cost of the predictor is 10 bits per branch.
+Below is a high-level representation of how a 2 Bit History Predictor can
+perfectly predict the <code>(NNT)*</code> sequence.</p>
+<p><img src="lesson4/./img/2-bit-history-predictor.png" alt="2-bit-history-predictor" /></p>
+<p>Thinking more about our history predictors, some things become evident. For an
+N-bit History Predictor:</p>
+<ul>
+<li>We can perfectly predict all patterns of length less than or equal to <code>N+1</code>.</li>
+<li>The cost for an N-bit History Predictor is <code>N + 2 * 2^N</code> <strong>per entry</strong></li>
+<li>This is wasteful, most of the 2BCs will go unused.</li>
+</ul>
+<p><img src="lesson4/./img/2-bit-history-predictor-waste.png" alt="2-bit-history-predictor-waste" /></p>
+<h2><a class="header" href="#n-bit-history-predictor-quiz" id="n-bit-history-predictor-quiz">N-bit History Predictor Quiz</a></h2>
+<p>The below quiz is an excerpt from the lecture, outlining the cost and waste of
+different size N-bit History Predictors.</p>
+<p><img src="lesson4/./img/n-bit-history-predictor-quiz.png" alt="n-bit-history-predictor-quiz" /></p>
+<h2><a class="header" href="#history-predictor-quiz" id="history-predictor-quiz">History Predictor Quiz</a></h2>
+<p>The below quiz is an excerpt from the lecture, demonstrating how to calculate
+the number of entries in a history predictor necessary to support a branch
+outcome pattern generated by these two <code>for</code> loops. As you can see, a lot of
+2BCs are wasted just to support an 8 bit history.</p>
+<p><img src="lesson4/./img/history-predictor-quiz.png" alt="history-predictor-quiz" /></p>
 
                     </main>
 

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Branches</title>
+        <title>Direction Predictor</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html" class="active"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html" class="active"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -159,50 +159,83 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#branches" id="branches">Branches</a></h1>
-<p>In the previous <a href="../lesson3/pipelining.html">pipelining</a> lesson, we saw the
-effects that hazards have on performance. Branches and jumps are common
-instructions that introduce control dependencies - our only solution can't just
-be to flush the processor pipeline each time a branch or jump is decoded. This
-lesson covers techniques used to effectively avoid hazards introduced by control
-dependencies.</p>
-<h2><a class="header" href="#branch-in-a-pipeline" id="branch-in-a-pipeline">Branch in a pipeline</a></h2>
-<p>The example provided below uses a 5 stage processor pipeline to demonstrate the
-costs of incorrect branch prediction. The example explains how a branch
-instruction works: is registers <code>R1</code> and <code>R2</code> are equal, the immediate value
-represented by <code>Label</code> will be added to the program counter, <code>PC</code>, and execution
-will begin at that location in memory. Otherwise, the program counter will be
-incremented regularly - <code>R1</code> and <code>R2</code> are not equal.</p>
-<p>In this scenario, a branch instruction enters the pipeline at cycle 1. The
-branch instruction isn't evaluated until cycle 3 by the ALU. Meanwhile, two
-instructions are fetched and decoded - these are represented by a <code>??</code> because
-the instructions can be fetched either from memory directly after the branch
-instruction or the landing location in memory if the branch instruction is
-taken.</p>
-<p>If we predict the outcome of the branch instruction correctly, the instructions
-that were fetched and decoded will execute immediately after the branch
-instruction leaves the pipeline - the branch will have taken 1 cycle to
-complete. If we predicted the outcome of the branch incorrectly and loaded the
-wrong instructions into the pipeline, these instructions will have to be flushed
-and the branch will have taken 3 cycles to complete.</p>
-<p><img src="./img/branch-in-a-pipeline.png" alt="branch-in-a-pipeline" /></p>
-<h2><a class="header" href="#references" id="references">References</a></h2>
-<ol>
-<li><a href="./pdf/Lesson4Notes.pdf">Lesson 4 Notes</a></li>
-</ol>
+                        <h1><a class="header" href="#direction-predictor" id="direction-predictor">Direction Predictor</a></h1>
+<p>We further simplify our branch predictor by adding another abstraction, the
+<strong>branch history table</strong>. This table contains a <code>1</code> or <code>0</code> for each different
+program counter that indexes into it - we calculate indices just like we did
+with the BTB (using the LSBits of a program counter that are most likely to be
+unique).</p>
+<p>The <code>0</code> represents that the branch is not taken. The program counter is
+incremented and we begin fetching instructions from that location. No changes
+are made to the BTB because no branch was taken.</p>
+<p>The <code>1</code> represents that the branch is taken. The BTB is referenced to determine
+the next program counter based upon the current one being inspected, and we
+begin to fetch instructions from that new location.</p>
+<p>If the prediction made is incorrect, the branch history table is updated with
+the correct value at the index - <code>0</code> or <code>1</code>. If a not taken prediction was made
+and this prediction ended up being incorrect, we update the BTB with the next
+program counter that is the destination of the branch.</p>
+<p>Because the branch history table is only 1 bit for each index, we can have way
+more entries for unique program counters. This way, we can use the BTB only for
+branches and not just regular instructions.</p>
+<p><img src="./img/direction-predictor.png" alt="direction-predictor" /></p>
+<h2><a class="header" href="#btb--bht-quiz" id="btb--bht-quiz">BTB &amp; BHT Quiz</a></h2>
+<p>The below quiz excerpt demonstrates that the BHT needs to be accessed for each
+instruction.</p>
+<p><img src="./img/btb-bht-quiz.png" alt="btb-bht-quiz" /></p>
+<h2><a class="header" href="#btb--bht-quiz-2" id="btb--bht-quiz-2">BTB &amp; BHT Quiz 2</a></h2>
+<p>The below quiz excerpt demonstrates how the BHT is indexed using the program
+counter.</p>
+<p><img src="./img/btb-bht-quiz-2.png" alt="btb-bht-quiz-2" /></p>
+<h2><a class="header" href="#btb--bht-quiz-3" id="btb--bht-quiz-3">BTB &amp; BHT Quiz 3</a></h2>
+<p>The below quiz excerpt demonstrates the conditions required to access the BTB.</p>
+<p><img src="./img/btb-bht-quiz-3.png" alt="btb-bht-quiz-3" /></p>
+<h2><a class="header" href="#btb--bht-quiz-4" id="btb--bht-quiz-4">BTB &amp; BHT Quiz 4</a></h2>
+<p>The below quiz excerpt demonstrates how the BTB is indexed using the program
+counter.</p>
+<p><img src="./img/btb-bht-quiz-4.png" alt="btb-bht-quiz-4" /></p>
+<h2><a class="header" href="#btb--bht-quiz-5" id="btb--bht-quiz-5">BTB &amp; BHT Quiz 5</a></h2>
+<p>The below quiz excerpt demonstrates how we can calculate the number of
+mis-predictions for each instruction using an imperfect BHT.</p>
+<p><img src="./img/btb-bht-quiz-5.png" alt="btb-bht-quiz-5" /></p>
+<h2><a class="header" href="#problems-with-1-bit-prediction" id="problems-with-1-bit-prediction">Problems with 1 bit prediction</a></h2>
+<p>So what's wrong with the 1 bit predictor? Why does its performance not satisfy
+the needs of computer architecture designers, creating the need to research
+pattern predictors?</p>
+<p>The 1 bit predictor predicts these things well:</p>
+<ul>
+<li><strong>Branches that are always taken</strong></li>
+<li><strong>Branches that are always not taken</strong></li>
+<li><strong>Branches that are taken A LOT more often than not taken</strong></li>
+<li><strong>Branches that are not taken A LOT more often than taken</strong></li>
+</ul>
+<p>The example below demonstrates how, when a 1 bit predictor encounters an
+<strong>anomaly</strong> in predictions for a particular branch, this can incur two
+mis-predictions.</p>
+<p>The 1 bit predictor does not perform well when:</p>
+<ul>
+<li><strong>Branches are taken more often than not, but not by much</strong></li>
+<li><strong>Branches are not taken more often than not, but not by much</strong></li>
+<li><strong>Encountering short loops</strong></li>
+</ul>
+<p>The 1 bit predictor will be bad when:</p>
+<ul>
+<li><strong>Branches taken and not taken are about the same in number</strong></li>
+</ul>
+<p><img src="./img/1-bit-predictor-problems.png" alt="1-bit-predictor-problems" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../lesson3/pipelining.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../lesson4/branch-target-buffer.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../lesson4/prediction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../lesson4/2-bit-predictor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -214,13 +247,13 @@ and the branch will have taken 3 cycles to complete.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../lesson3/pipelining.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../lesson4/branch-target-buffer.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="../lesson4/prediction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../lesson4/2-bit-predictor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

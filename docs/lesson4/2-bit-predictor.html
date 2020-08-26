@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Welcome</title>
+        <title>2 Bit Predictor</title>
         
         
 
@@ -18,26 +18,26 @@
         <meta name="theme-color" content="#ffffff" />
 
         
-        <link rel="icon" href="favicon.svg">
+        <link rel="icon" href="../favicon.svg">
         
         
-        <link rel="shortcut icon" href="favicon.png">
+        <link rel="shortcut icon" href="../favicon.png">
         
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
         
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
         
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         
@@ -47,7 +47,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html" class="active">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html" class="active"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -128,7 +128,7 @@
                     <h1 class="menu-title"></h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         
@@ -159,28 +159,74 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#welcome" id="welcome">Welcome</a></h1>
-<p>This notebook contains my personal notes for CS6290: High Performance Computer
-Architecture offered at the Georgia Institute of Technology. A summary of the
-course follows:</p>
-<p>This course covers modern computer architecture, including branch prediction,
-out-of-order instruction execution, cache optimizations, multi-level caches,
-memory and storage, cache coherence and consistency, and multi- and many-core
-processors.</p>
-<h2><a class="header" href="#course-links" id="course-links">Course links</a></h2>
+                        <h1><a class="header" href="#2-bit-predictor" id="2-bit-predictor">2 Bit Predictor</a></h1>
+<p>A 2 bit predictor or 2 bit counter (2BP or 2BC) just adds another bit to the BHT
+to implement a state machine. The first bit in the 2BP is the prediction bit,
+and the second bit is called the <strong>hysteresis</strong> or conviction bit. These are the
+states of the 2BP:</p>
 <ul>
-<li><a href="https://omscs.gatech.edu/cs-6290-high-performance-computer-architecture">https://omscs.gatech.edu/cs-6290-high-performance-computer-architecture</a></li>
-<li><a href="https://ebookcentral-proquest-com.prx.library.gatech.edu/lib/gatech/detail.action?docID=787253">https://ebookcentral-proquest-com.prx.library.gatech.edu/lib/gatech/detail.action?docID=787253</a></li>
+<li><code>00</code> - strong not-taken state</li>
+<li><code>01</code> - weak not-taken state</li>
+<li><code>10</code> - weak taken state</li>
+<li><code>11</code> - strong taken state</li>
 </ul>
+<p>You can probably see where this is going. We start out in the strong not-taken
+state for a program counter. When we mis-predict that a branch is not-taken, we
+increment the hysteresis bit and transition to the weak not-taken state. We
+still don't take the branch until we are proven incorrectly again. A
+mis-prediction at this point will transition us to the weak taken state.</p>
+<p>So unlike the 1 bit predictor, our affinity to take or not take a branch doesn't
+flip as easily. This solves the problem we had earlier where, if we encountered
+an anomaly for a branch that is usually taken or not taken, we won't incur a
+penalty of two mis-predictions.</p>
+<p><img src="./img/2-bit-predictor.png" alt="2-bit-predictor" /></p>
+<h2><a class="header" href="#2-bit-predictor-initialization" id="2-bit-predictor-initialization">2 Bit Predictor initialization</a></h2>
+<p>The below excerpt from the lectures demonstrates that it's a good idea to
+initialize the 2 bit predictor in a weak state, doesn't matter if it's taken or
+not taken. This is because, at program start, we don't know the history of the
+branches, yet, so starting in the weak state only incurs 1 mis-prediction
+penalty while starting in a strong state incurs 2.</p>
+<p>On the flip-side, if a branch flip-flops and we start in the weak state, we will
+incur a mis-prediction penalty every single time we encounter the branch. This
+isn't common behavior (fortunately).</p>
+<p>The evidence provided above would give you the idea that we should always init
+the 2 bit predictor in the weak state, but for the sake of practicality, it
+really doesn't matter and most 2 bit predictors are initialized at <code>00</code>.</p>
+<p><img src="./img/2-bit-predictor-init.png" alt="2-bit-predictor-init" /></p>
+<h2><a class="header" href="#2-bit-predictor-quiz" id="2-bit-predictor-quiz">2 Bit Predictor Quiz</a></h2>
+<p>The below quiz excerpt from the lectures demonstrates how there is a worst-case
+scenario for the 2 bit predictor, showcasing a series of branches that will
+cause the predictor to mis-predict every branch.</p>
+<p>The moral of the story is, <strong>every</strong> predictor will have a worst-case scenario.
+A good predictor will make it difficult to find or generate this worst-case
+sequence of branches.</p>
+<p><img src="./img/2-bit-predictor-quiz.png" alt="2-bit-predictor-quiz" /></p>
+<h2><a class="header" href="#1-bits-2-bits-what-else" id="1-bits-2-bits-what-else">1 bits, 2 bits... what else?</a></h2>
+<p>So we've seen that the 2 bit predictor is better than the 1 bit predictor at
+handling anomalous outcomes. Does this get better if we add 3 bits to the
+predictor? Well, maybe. Another bit will just increase the number of states,
+making it more difficult to transition to another prediction - this is useful
+if the anomalous behavior comes in streaks. This behavior is not common, however
+, in programs. Adding another bit imposes more cost, as it requires more space
+to store the information per program counter.</p>
+<p>A 2 bit predictor meets the needs we identified earlier of handling anomalous
+behavior, but what about that one case where the branch outcome kept
+flip-flopping? Since increasing the number of bits to solve this problem doesn't
+really do anything, what's the next solution?</p>
+<p><img src="./img/2-bit-predictor-summary.png" alt="2-bit-predictor-summary" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
+                            <a rel="prev" href="../lesson4/direction-predictor.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
 
                         
-                            <a rel="next" href="lesson1/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../lesson4/history-based-predictors.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -192,9 +238,13 @@ processors.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
+                    <a rel="prev" href="../lesson4/direction-predictor.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
 
                 
-                    <a rel="next" href="lesson1/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../lesson4/history-based-predictors.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
@@ -232,14 +282,14 @@ processors.</p>
         
 
         
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
         
 
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         

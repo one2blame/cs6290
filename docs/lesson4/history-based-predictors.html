@@ -3,10 +3,8 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title></title>
+        <title>History Based Predictors</title>
         
-        
-        <base href="/">
         
 
 
@@ -20,26 +18,26 @@
         <meta name="theme-color" content="#ffffff" />
 
         
-        <link rel="icon" href="favicon.svg">
+        <link rel="icon" href="../favicon.svg">
         
         
-        <link rel="shortcut icon" href="favicon.png">
+        <link rel="shortcut icon" href="../favicon.png">
         
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
         
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
         
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         
@@ -49,7 +47,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -95,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html" class="active"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -130,7 +128,7 @@
                     <h1 class="menu-title"></h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         
@@ -161,13 +159,62 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#document-not-found-404" id="document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1><a class="header" href="#history-based-predictors" id="history-based-predictors">History Based Predictors</a></h1>
+<p>History Based Predictors are designed to recognize and learn patterns based
+upon the history of taken or not taken outcomes of a branch. Below is an example
+that provides a high-level representation of the concept. The flip-floppy
+branch outcomes are definitely predictable, just not with simple N-bit counters.</p>
+<p><img src="./img/history-based-predictors.png" alt="history-based-predictors" /></p>
+<h2><a class="header" href="#1-bit-history-w-2bc" id="1-bit-history-w-2bc">1 Bit History w/ 2BC</a></h2>
+<p>Below is an excerpt from the lectures that provides a high-level representation
+of a BHT with 1 bit for history, and two 2BC's to manage the state for taken
+and not taken branch outcomes.</p>
+<p>What the 1 bit history 2BC BHT provides us is a predictor that is able to learn
+the pattern of a series of branch outcomes. The 1 bit history bit is used to
+index into the two 2BC's and, based upon the branch outcome, updates the state
+of each 2BC.</p>
+<p><img src="./img/1-bit-history-2bc.png" alt="1-bit-history-2bc" /></p>
+<h2><a class="header" href="#1-bit-history-quiz" id="1-bit-history-quiz">1 Bit History Quiz</a></h2>
+<p>Below is an a quiz excerpt from the lectures demonstrating the calculation of
+the number of mis-predictions for a pattern of branch outcomes following the
+this pattern: <code>(NNT)*</code>. As we can see from the outcome of the calculations in
+the quiz, the 1 Bit History with two 2BC's is not a good solution for this
+pattern.</p>
+<p><img src="./img/1-bit-history-2bc-quiz.png" alt="1-bit-history-2bc-quiz" /></p>
+<h2><a class="header" href="#2-bit-history-predictor" id="2-bit-history-predictor">2 Bit History Predictor</a></h2>
+<p>The 2 Bit History Predictor works very similar to the 1 Bit History Predictor,
+now we've just doubled the number of 2BCs. The 2 Bit History bits are used to
+index into the four 2BCs. The total cost of the predictor is 10 bits per branch.
+Below is a high-level representation of how a 2 Bit History Predictor can
+perfectly predict the <code>(NNT)*</code> sequence.</p>
+<p><img src="./img/2-bit-history-predictor.png" alt="2-bit-history-predictor" /></p>
+<p>Thinking more about our history predictors, some things become evident. For an
+N-bit History Predictor:</p>
+<ul>
+<li>We can perfectly predict all patterns of length less than or equal to <code>N+1</code>.</li>
+<li>The cost for an N-bit History Predictor is <code>N + 2 * 2^N</code> <strong>per entry</strong></li>
+<li>This is wasteful, most of the 2BCs will go unused.</li>
+</ul>
+<p><img src="./img/2-bit-history-predictor-waste.png" alt="2-bit-history-predictor-waste" /></p>
+<h2><a class="header" href="#n-bit-history-predictor-quiz" id="n-bit-history-predictor-quiz">N-bit History Predictor Quiz</a></h2>
+<p>The below quiz is an excerpt from the lecture, outlining the cost and waste of
+different size N-bit History Predictors.</p>
+<p><img src="./img/n-bit-history-predictor-quiz.png" alt="n-bit-history-predictor-quiz" /></p>
+<h2><a class="header" href="#history-predictor-quiz" id="history-predictor-quiz">History Predictor Quiz</a></h2>
+<p>The below quiz is an excerpt from the lecture, demonstrating how to calculate
+the number of entries in a history predictor necessary to support a branch
+outcome pattern generated by these two <code>for</code> loops. As you can see, a lot of
+2BCs are wasted just to support an 8 bit history.</p>
+<p><img src="./img/history-predictor-quiz.png" alt="history-predictor-quiz" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../lesson4/2-bit-predictor.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
                         
 
                         
@@ -178,6 +225,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../lesson4/2-bit-predictor.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
                 
 
                 
@@ -215,14 +266,14 @@
         
 
         
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
         
 
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         

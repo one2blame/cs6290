@@ -6,3 +6,7 @@
 - [Pipelining](./lesson3/pipelining.md)
 - [Branches](./lesson4/branches.md)
   - [Prediction](./lesson4/prediction.md)
+  - [Branch Target Buffer](./lesson4/branch-target-buffer.md)
+  - [Direction Predictor](./lesson4/direction-predictor.md)
+  - [2 Bit Predictor](./lesson4/2-bit-predictor.md)
+  - [History Based Predictors](./lesson4/history-based-predictors.md)
