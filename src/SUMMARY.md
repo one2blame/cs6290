@@ -10,3 +10,6 @@
   - [Direction Predictor](./lesson4/direction-predictor.md)
   - [2 Bit Predictor](./lesson4/2-bit-predictor.md)
   - [History Based Predictors](./lesson4/history-based-predictors.md)
+  - [PShare](./lesson4/pshare.md)
+  - [Tournament Predictor](./lesson4/tournament-predictor.md)
+  - [Return Address Stack](./lesson4/return-address-stack.md)

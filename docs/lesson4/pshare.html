@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Direction Predictor</title>
+        <title>PShare</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html" class="active"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="../lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="../lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="../lesson4/pshare.html" class="active"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="../lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -159,83 +159,64 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#direction-predictor" id="direction-predictor">Direction Predictor</a></h1>
-<p>We further simplify our branch predictor by adding another abstraction, the
-<strong>branch history table</strong>. This table contains a <code>1</code> or <code>0</code> for each different
-program counter that indexes into it - we calculate indices just like we did
-with the BTB (using the LSBits of a program counter that are most likely to be
-unique).</p>
-<p>The <code>0</code> represents that the branch is not taken. The program counter is
-incremented and we begin fetching instructions from that location. No changes
-are made to the BTB because no branch was taken.</p>
-<p>The <code>1</code> represents that the branch is taken. The BTB is referenced to determine
-the next program counter based upon the current one being inspected, and we
-begin to fetch instructions from that new location.</p>
-<p>If the prediction made is incorrect, the branch history table is updated with
-the correct value at the index - <code>0</code> or <code>1</code>. If a not taken prediction was made
-and this prediction ended up being incorrect, we update the BTB with the next
-program counter that is the destination of the branch.</p>
-<p>Because the branch history table is only 1 bit for each index, we can have way
-more entries for unique program counters. This way, we can use the BTB only for
-branches and not just regular instructions.</p>
-<p><img src="./img/direction-predictor.png" alt="direction-predictor" /></p>
-<h2><a class="header" href="#btb--bht-quiz" id="btb--bht-quiz">BTB &amp; BHT Quiz</a></h2>
-<p>The below quiz excerpt demonstrates that the BHT needs to be accessed for each
-instruction.</p>
-<p><img src="./img/btb-bht-quiz.png" alt="btb-bht-quiz" /></p>
-<h2><a class="header" href="#btb--bht-quiz-2" id="btb--bht-quiz-2">BTB &amp; BHT Quiz 2</a></h2>
-<p>The below quiz excerpt demonstrates how the BHT is indexed using the program
-counter.</p>
-<p><img src="./img/btb-bht-quiz-2.png" alt="btb-bht-quiz-2" /></p>
-<h2><a class="header" href="#btb--bht-quiz-3" id="btb--bht-quiz-3">BTB &amp; BHT Quiz 3</a></h2>
-<p>The below quiz excerpt demonstrates the conditions required to access the BTB.</p>
-<p><img src="./img/btb-bht-quiz-3.png" alt="btb-bht-quiz-3" /></p>
-<h2><a class="header" href="#btb--bht-quiz-4" id="btb--bht-quiz-4">BTB &amp; BHT Quiz 4</a></h2>
-<p>The below quiz excerpt demonstrates how the BTB is indexed using the program
-counter.</p>
-<p><img src="./img/btb-bht-quiz-4.png" alt="btb-bht-quiz-4" /></p>
-<h2><a class="header" href="#btb--bht-quiz-5" id="btb--bht-quiz-5">BTB &amp; BHT Quiz 5</a></h2>
-<p>The below quiz excerpt demonstrates how we can calculate the number of
-mis-predictions for each instruction using an imperfect BHT.</p>
-<p><img src="./img/btb-bht-quiz-5.png" alt="btb-bht-quiz-5" /></p>
-<h2><a class="header" href="#problems-with-1-bit-prediction" id="problems-with-1-bit-prediction">Problems with 1 bit prediction</a></h2>
-<p>So what's wrong with the 1 bit predictor? Why does its performance not satisfy
-the needs of computer architecture designers, creating the need to research
-pattern predictors?</p>
-<p>The 1 bit predictor predicts these things well:</p>
-<ul>
-<li><strong>Branches that are always taken</strong></li>
-<li><strong>Branches that are always not taken</strong></li>
-<li><strong>Branches that are taken A LOT more often than not taken</strong></li>
-<li><strong>Branches that are not taken A LOT more often than taken</strong></li>
-</ul>
-<p>The example below demonstrates how, when a 1 bit predictor encounters an
-<strong>anomaly</strong> in predictions for a particular branch, this can incur two
-mis-predictions.</p>
-<p>The 1 bit predictor does not perform well when:</p>
-<ul>
-<li><strong>Branches are taken more often than not, but not by much</strong></li>
-<li><strong>Branches are not taken more often than not, but not by much</strong></li>
-<li><strong>Encountering short loops</strong></li>
-</ul>
-<p>The 1 bit predictor will be bad when:</p>
-<ul>
-<li><strong>Branches taken and not taken are about the same in number</strong></li>
-</ul>
-<p><img src="./img/1-bit-predictor-problems.png" alt="1-bit-predictor-problems" /></p>
+                        <h1><a class="header" href="#pshare-and-gshare" id="pshare-and-gshare">PShare and GShare</a></h1>
+<p>The tail end of the
+<a href="./lesson4/../history-based-predictors.html">history based predictor</a> lesson
+describes the beginnings of what's known as the <strong>PShare</strong>  predictor. What
+does PShare stand for? <strong>Private</strong> history for each branch and
+<strong>Shared</strong> counters so that different histories and counters might share the
+same counter. The PShare predictor is good for flip-floppy branch outcomes and
+8-iteration loops.</p>
+<p>In contrast, we have <strong>GShare</strong> with <strong>Global</strong> history and <strong>shared</strong> counters.
+What does global history mean? It means we have single history that is used to
+predict all branch outcomes. So every history, regardless of program counter,
+is used to calculate the counter for prediction. The GShare predictor is good
+for <strong>correlated branches</strong>.</p>
+<p>What's a correlated branch? These are branches whose decisions rely upon what
+other branches in the program are doing. An example is provided in the excerpt
+below, showcasing a decision statement where one of two actions will take place
+depending upon the value of a <code>shape</code> variable. Only one branch will evaluate to
+try, thus they are correlated branches.</p>
+<p><img src="./img/pshare-gshare.png" alt="pshare-gshare" /></p>
+<h2><a class="header" href="#pshare-vs-gshare-quiz" id="pshare-vs-gshare-quiz">PShare vs GShare Quiz</a></h2>
+<p>Below is a quiz excerpt from the class explaining the differences between
+PShare and GShare. Given some C code, we are provided what the C code would
+resemble in assembly and then asked to determine how many bits of history
+would be required to support the branches in the code using both PShare and
+GShare.</p>
+<p>The quiz demonstrates that it would be easy to predict the first and last
+branches and that they don't require any history support. The first branch will
+have the outcome of not taken 1000 times, and the last branch will have the
+outcome of taken 1000 times. The second branch, however, will flip-flop between
+taken and not taken, as each different integer will evaluate as even or odd.
+Thus our PShare predictor will need <code>1</code> bit of history to support perfect
+prediction of this branch's outcomes.</p>
+<p>In contrast, GShare will require <code>3</code> bits of history to support the branches on
+a global scale and in order to correctly predict the branch outcomes. Again,
+the first and last branch outcomes are unlikely to change, however, the second
+branch will flip-flop thus we need <code>3</code> bits of history to represent the
+correlation between these branches. When we see that the first branch was not
+taken, we'll also see the second branch either being taken or not taken, and
+if the first branch wasn't taken we know that the third branch is taken.</p>
+<p><img src="./img/pshare-vs-gshare.png" alt="pshare-vs-gshare" /></p>
+<h2><a class="header" href="#pshare-or-gshare" id="pshare-or-gshare">PShare or GShare</a></h2>
+<p>Historically, designers would pick one or the other of these history based
+predictors. Eventually, designers realized they would need to use both as GShare
+works well with predicting correlated branches and PShare works better with
+self similar branches.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../lesson4/branch-target-buffer.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../lesson4/history-based-predictors.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../lesson4/2-bit-predictor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../lesson4/tournament-predictor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -247,13 +228,13 @@ mis-predictions.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../lesson4/branch-target-buffer.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../lesson4/history-based-predictors.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="../lesson4/2-bit-predictor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../lesson4/tournament-predictor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
