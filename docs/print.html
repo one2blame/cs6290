@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item expanded "><a href="lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -1149,6 +1149,150 @@ with the instruction in the cache.</li>
 </li>
 </ul>
 <p><img src="lesson4/./img/pre-decoding.png" alt="pre-decoding" /></p>
+<h1><a class="header" href="#predication" id="predication">Predication</a></h1>
+<h2><a class="header" href="#summary" id="summary">Summary</a></h2>
+<p>This lesson covers more topics in relation to control dependencies and the
+hazards they pose. We covered a bunch of different branch predictors in
+<a href="lesson5/./lesson4/branches.html">lesson 4</a> and we noticed that some branches are really
+difficult to predict, even when we use really sophisticated branch predictors.</p>
+<p>This lesson showcases how the compiler can help us to completely avoid hard to
+predict branches.</p>
+<h2><a class="header" href="#predication-explained" id="predication-explained">Predication explained</a></h2>
+<p>Like we covered in the previous lesson, with branch prediction we attempt to
+guess the landing location of the branch and we begin fetching instructions from
+that instruction sequence into the pipeline. If we are correct in our guess,
+we incur no penalty. An incorrect guess incurs a penalty and, depending upon
+how long our pipeline is, this penalty can be <em>huge</em>.</p>
+<p>Contrast this with <strong>predication</strong>. In predication, we fetch instructions from
+the instruction sequences of both possible landing locations for a branch. With
+this technique, even if we guess correctly or incorrectly, we still have to toss
+out 50% of the instructions that have been fetched into the processor pipeline.
+We don't incur a penalty anymore, however, because we realistically aren't
+making a guess, we're just saying yes to both outcomes of a branch instruction.</p>
+<p>So if we're always incurring a penalty with predication, in what context is it
+better than branch prediction? Here is a breakdown of the examples showcased in
+the lecture:</p>
+<ul>
+<li><strong>Loops</strong> - best application is a branch predictor. Loops are easier to
+predict as the number of iterations increases. With predication, we would be
+continuously fetching instructions from the instruction sequence after the loop,
+wasting a lot of effort as those instructions will continuously flushed from the
+pipeline - the branch that goes back into the loop will be taken almost always.</li>
+<li><strong>Function calls/ret</strong> - best application is a branch predictor. The function
+will always return, taking the branch instruction. No reason to fetch
+instructions from the instruction sequence after a ret.</li>
+<li><strong>Large decision statements (if-then-else)</strong> - best application is a branch
+predictor, dependent upon the size of the instruction sequence that comprises
+the decision statement and the length of the processor pipeline. If two
+directions in a decision statement were both 100 instructions long and the
+processor pipeline was 50 stages long, if we mis-predict we only incur a penalty
+of 50 stages. If we predict correctly, we incur no penalty. In contrast, a
+predicator will always incur the penalty of 100 because we load instructions
+from both possible instruction sequences following the branch instruction.</li>
+<li><strong>Small decision statements (if-then-else)</strong> - the best application is
+predication. If two instruction sequence outcomes for a branch are both 5
+instructions long, we will always incur a 5 instruction penalty with
+predication. If we use branch prediction and the processor pipeline is 50 stages
+long, if we make a mis-prediction, we'll have wasted 50 stages. Dependent upon
+how accurate the branch predictor is, we might be able to match the performance
+of predication in this use case, however, the more inaccurate the branch
+predictor the less viable an option it will be for small decision statements.</li>
+</ul>
+<p><img src="lesson5/./img/predication.png" alt="predication" /></p>
+<h2><a class="header" href="#conditional-move" id="conditional-move">Conditional move</a></h2>
+<p>This section discusses the conditional move instructions available in the <code>MIPS</code>
+and <code>x86</code> instruction sets. The example below covers <code>MOVZ</code> and <code>MOVN</code>:</p>
+<ul>
+<li><code>MOVZ</code> - takes two sources and a destination register. If the third operand
+is equal to <code>0</code>, the second operand is loaded into the destination register.</li>
+<li><code>MOVN</code> - takes two sources and a destination register. If the third operand
+is not equal to <code>0</code>, the second operand is loaded into the destination register.</li>
+</ul>
+<p>Example <code>x86</code> <code>CMOV</code> instructions are shown below.</p>
+<p><img src="lesson5/./img/conditional-move.png" alt="conditional-move" /></p>
+<h2><a class="header" href="#movz-movn-quiz" id="movz-movn-quiz">MOVZ MOVN quiz</a></h2>
+<p>Below is quiz a on how to convert code that originally contains branch
+instruction into code that uses conditional moves to avoid making predictions.
+This code models a short decision statement that loads some values into
+different variables based upon some condition statement.</p>
+<p><img src="lesson5/./img/movz-movn-quiz.png" alt="movz-movn-quiz" /></p>
+<h2><a class="header" href="#movz-movn-performance" id="movz-movn-performance">MOVZ MOVN performance</a></h2>
+<p>The excerpt from the lectures below showcases a comparison of the performance
+between traditional branch prediction and the translation we did of the
+instructions to enable predication. Give a branch predictor that's correct
+80% of the time and incurs a 40 instruction penalty if we encounter a
+mis-prediction, we average the number of instructions that can executed between
+the two branch instruction sequences, <code>5 * 0.5 == 2.5</code>, and then we throw in our
+inaccuracy and penalty: <code>2.5 + 0.2 * 40 == 10.5</code>.</p>
+<p>So, on average, the branch predictor in this example incurs <code>10.5</code> instructions
+worth of work to evaluate and execute this condition statement. In contrast, for
+predication, all of the instructions are fetched and executed because we've
+translated the branch into conditional move instructions. We incur <code>4</code>
+instructions worth of work to evaluate and execute this condition statement.</p>
+<p><img src="lesson5/./img/movz-movn-performance.png" alt="movz-movn-performance" /></p>
+<h2><a class="header" href="#movx-summary" id="movx-summary">MOVx summary</a></h2>
+<p>To summarize predication using <code>MOVx</code>:</p>
+<ul>
+<li>Needs compiler support to translate eligible condition statements using <code>MOVx</code>
+instructions rather than generating branch instructions</li>
+<li>Removes hard-to-predict branches, increasing performance</li>
+<li>More registers are needed in order to support predication using <code>MOVx</code>
+<ul>
+<li>Results from both instruction sequences have to be calculated and stored</li>
+</ul>
+</li>
+<li>More instructions are executed
+<ul>
+<li>No branch prediction is conducted, both instruction sequences are executed
+and their results are stored in registers</li>
+<li><code>MOVx</code> is used to select the results of the condition statement</li>
+</ul>
+</li>
+</ul>
+<p>So what portions of this summarized list are absolutely necessary to implement
+predication? Well:</p>
+<ul>
+<li>Compiler support is definitely necessary</li>
+<li>The whole purpose of this is to remove hard-to-predict branches</li>
+<li><strong>We don't need more registers to store our results - we can conduct
+comparison directly against values in memory</strong></li>
+<li><strong>We don't need to use <code>MOVx</code> to select results</strong></li>
+</ul>
+<p>How do we remove the unnecessary portions of the summarization above? <strong>We make
+all of our instructions conditional!</strong> With this, we can achieve <em>full
+predication</em> - but it requires extensive support in the instruction set.</p>
+<h2><a class="header" href="#hardware-support-for-full-predication" id="hardware-support-for-full-predication">Hardware support for full predication</a></h2>
+<p>Usually, we have a separate opcode for conditional move instructions. For <strong>full
+predication</strong>, we add condition bits to <em>every instruction</em>. Below is an excerpt
+from the lectures showcasing the Itanium instruction set's use of <strong>qualifying
+predicates</strong> in its instructions to support full predication. Qualifying
+predicates specify what register will be used to conduct a comparison for a
+conditional move.</p>
+<p><img src="lesson5/./img/full-pred-hw-support.png" alt="full-pred-hw-support" /></p>
+<h2><a class="header" href="#full-predication-example" id="full-predication-example">Full predication example</a></h2>
+<p>The excerpt below now shows our previous condition statement convert to a set
+of instructions that uses full predication. The first instruction sets the
+qualifying predicates, <code>p1</code> and <code>p2</code>, to <code>0</code> or <code>1</code> based upon the value of <code>R1</code>
+. If <code>R1</code> is <code>0</code>, <code>p1</code> is set and the instruction predicated by <code>p1</code> will
+actually store its value into <code>R3</code> after execution. If <code>R1</code> is not <code>0</code>, <code>p2</code> is
+set and the instruction predicated by <code>p2</code> will store its value into <code>R2</code> after
+execution.</p>
+<p>So, in the original code with branch instructions, we have the possibility of
+executing 2 or 3 instructions based upon our prediction, but we still incur a
+penalty. In our previous examples using <code>MOVx</code>, we were able to translate the
+condition statement into a set of 4 instructions. Now, with hardware support for
+full predication, we are able to translate this condition statement into 3
+instructions.</p>
+<p><img src="lesson5/./img/full-predication-ex.png" alt="full-predication-ex" /></p>
+<h2><a class="header" href="#full-predication-quiz" id="full-predication-quiz">Full predication quiz</a></h2>
+<p>Below is a the full predication quiz solution from the lecture, conducting a
+performance comparison between the original branch version of the condition
+statement code to the full predication translation.</p>
+<p><img src="lesson5/./img/full-predication-quiz.png" alt="full-predication-quiz" /></p>
+<h2><a class="header" href="#references-4" id="references-4">References</a></h2>
+<ol>
+<li><a href="lesson5/./pdf/Lesson5Notes.pdf">Lesson 5 Notes</a></li>
+</ol>
 
                     </main>
 
