@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item expanded "><a href="lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item expanded "><a href="lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item expanded "><a href="lesson6/ilp.html"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson6/false-deps.html"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item expanded "><a href="lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -1293,6 +1293,219 @@ statement code to the full predication translation.</p>
 <ol>
 <li><a href="lesson5/./pdf/Lesson5Notes.pdf">Lesson 5 Notes</a></li>
 </ol>
+<h1><a class="header" href="#instruction-level-parallelism-ilp" id="instruction-level-parallelism-ilp">Instruction Level Parallelism (ILP)</a></h1>
+<h2><a class="header" href="#parallel-instruction-execution" id="parallel-instruction-execution">Parallel instruction execution</a></h2>
+<p>The below excerpt from the lectures showcases the hazards that can manifest due
+to data dependencies in parallel processor pipelines. As you can see here
+multiple instructions are destined to be executed and, if all instructions are
+able to be executed in parallel, it will take 5 cycles to execute a number of
+instructions. As the number of instructions approaches infinity, our CPI
+approaches <code>0</code>.</p>
+<p>This isn't realistic - some instructions will depend upon earlier instructions
+to write values to registers before the instruction is executed. If this isn't
+done, we will encounter data hazards wherein the registers we use for our
+instructions will contain stale values, ultimately causing the program to
+execute incorrectly.</p>
+<p><img src="lesson6/./img/same-cycle-ints.png" alt="same-cycle-ints" /></p>
+<h2><a class="header" href="#the-execute-stage" id="the-execute-stage">The execute stage</a></h2>
+<p>In previous sections of this notebook we discussed forwarding, a technique that
+can be used to resolve data dependencies and remove hazards. Unfortunately, this
+technique wont' work for us when we're executing instructions in parallel. The
+instruction that contains the data dependency will not receive the outcome of
+the forwarded instruction before it executes because they are executed in
+parallel.</p>
+<p>In order to remove the hazard related to this data dependency, we must stall
+the instruction until the previous instruction executes. Then, we will forward
+the result of the executed instruction to the dependent instruction. This will
+increase our CPI.</p>
+<p><img src="lesson6/./img/the-execute-stage.png" alt="the-execute-stage" /></p>
+<h2><a class="header" href="#raw-dependencies" id="raw-dependencies">RAW dependencies</a></h2>
+<p>The below excerpt from the lectures showcases how we can calculate the CPI
+for a set of instructions based upon the number of data dependencies that exists
+between them. As you can see, the more RAW dependencies that exist, the higher
+our CPI.</p>
+<p><img src="lesson6/./img/raw-deps.png" alt="raw-deps" /></p>
+<h2><a class="header" href="#waw-dependencies" id="waw-dependencies">WAW dependencies</a></h2>
+<p>The below excerpt from the lectures showcases how a WAW dependency can manifest
+due to a RAW dependency in previous instructions. The WAW dependency poses a
+hazard because the previous instruction is stalled due to a RAW dependency. If
+this goes ignored, the dependent instruction in the WAW dependency will write to
+a register before the previous write, executing instructions out of order. In
+order to solve this, the dependent instruction must be stalled twice so that the
+previous instruction can write.</p>
+<p><img src="lesson6/./img/waw-deps.png" alt="waw-deps" /></p>
+<h2><a class="header" href="#dependency-quiz" id="dependency-quiz">Dependency quiz</a></h2>
+<p>Below is a quiz from the lectures in the class that showcases how multiple RAW
+and WAW dependencies are handled in the processor pipeline.</p>
+<p><img src="lesson6/./img/dep-quiz.png" alt="dep-quiz" /></p>
+<h1><a class="header" href="#false-dependencies" id="false-dependencies">False Dependencies</a></h1>
+<p>We covered this in previous portions of this notebook, but we'll go over the
+dependency types once again. We have <strong>true</strong> dependencies and <strong>false</strong> or
+<strong>name</strong> dependencies. A true dependency is the RAW (read after write)
+dependency - pretty obvious because this is how the program is actually intended
+to execute. Both the WAR (write after read) and WAW (write after write)
+dependencies are false dependencies. In both of these dependencies, we are
+re-using registers for instructions when we could change the registers being
+used to eliminate the false dependencies completely.</p>
+<h2><a class="header" href="#duplicating-register-values" id="duplicating-register-values">Duplicating register values</a></h2>
+<p>This is a complicated technique in which we save multiple <strong>versions</strong> of a
+value for a register that is being written to. In the excerpt below, two
+different writes occur for the register: <code>R4</code>. This register is used in two
+different read operations, but what value will be used if the register is
+written twice?</p>
+<p>To remove the hazard posed by this WAW dependency, we store both versions of
+<code>R4</code> and then each read operation will utilize the appropriate version based
+upon the chronological order of the writes. The third instruction in this
+example will use the outcome of the write in instruction two for its read
+operation, even though instruction four writes to <code>R4</code> before instruction two
+does. A future instruction will use the most previous version of <code>R4</code> for its
+read operation, even though the write by instruction two occurs after the write
+by instruction four.</p>
+<p>Essentially, we are keeping track of all possible versions of a register in a
+parallel pipeline and different read operations that require the value of
+register will use the value generated by the most recent write operation.</p>
+<p><img src="lesson6/./img/duping-registers.png" alt="duping-registers" /></p>
+<h2><a class="header" href="#register-renaming" id="register-renaming">Register renaming</a></h2>
+<p>So duplicating and managing register values can get pretty complicated and time
+consuming. Another technique processors can use to remove hazards created by
+data dependencies is <strong>register renaming</strong>.</p>
+<p>In the below excerpt from the lectures, we define some terms:</p>
+<ul>
+<li><strong>architectural registers</strong> - these are register names used by the programmer
+and the compiler.</li>
+<li><strong>physical registers</strong> - these are the physical registers available to the
+processor to actually store real values.</li>
+<li><strong>register allocation table</strong> - this is a table used by the processor to
+translate architectural register names to physical registers. This table defines
+which physical register contains the data for a specified architectural
+register.</li>
+</ul>
+<p>The processor rewrites the program it's executing to use the physical registers.
+Through register renaming, it will have more registers available to store values
+and avoid hazards presented by data dependencies.</p>
+<p><img src="lesson6/./img/register-renaming.png" alt="register-renaming" /></p>
+<h2><a class="header" href="#rat-example" id="rat-example">RAT example</a></h2>
+<p>The below excerpt from the class showcases how a RAT works. Each time a new
+value is produced, a different physical register is used to store that value.
+Values for registers that are being read are acquired from the RAT after it
+translates the architectural name to the physical register. We call the WAW and
+WAR dependencies name dependencies because the name is the whole problem. If we
+rename the register that the value is being written to for each write, the
+instructions won't overwrite the work of the other instructions if they're
+executing in parallel.</p>
+<p>In this example, we can see that each write increments the physical register
+number that's being written to. This removes the hazard of a register being
+overwritten by a later instruction before an earlier instruction can conduct
+its write. Because the writes are to different physical registers, when an
+instruction is decoded and needs to read a register, the value it's reading is
+going to be from the instruction prior, not the most recent write to the
+register.</p>
+<p><img src="lesson6/./img/rat-example.png" alt="rat-example" /></p>
+<h2><a class="header" href="#register-renaming-quiz" id="register-renaming-quiz">Register renaming quiz</a></h2>
+<p>Below is a quiz for register renaming from the lectures. Pretty straightforward.</p>
+<p><img src="lesson6/./img/register-renaming-quiz.png" alt="register-renaming-quiz" /></p>
+<h2><a class="header" href="#false-dependencies-after-renaming" id="false-dependencies-after-renaming">False dependencies after renaming</a></h2>
+<p>So does renaming actually remove our WAR and WAW dependencies? Yes! In the below
+excerpt from the lectures we are shown a program that contains a set of
+dependencies for each instruction. Because each instruction has these
+dependencies, they must be executed in order, causing us to have a CPI of <code>1</code>.
+However, with renaming, we are able to eliminate the WAR and WAW dependencies
+improving our performance to a CPI of <code>0.33</code>.</p>
+<p><img src="lesson6/./img/after-renaming.png" alt="after-renaming" /></p>
+<h1><a class="header" href="#what-is-ilp" id="what-is-ilp">What is ILP?</a></h1>
+<p><strong>Instruction level parallelism (ILP)</strong> is a property of a program given the
+fact that it's running on an <em>ideal processor</em>. What's an ideal processor? An
+ideal processor has these attributes:</p>
+<ul>
+<li>Processor dispatches an entire instruction in <code>1</code> cycle.</li>
+<li>Processor can do any number of instructions in the same cycle.
+<ul>
+<li>The processor has to obey true dependencies when doing this.</li>
+</ul>
+</li>
+</ul>
+<p>So what are the steps to acquire the value of a program's ILP? A program's ILP
+is equal to the IPC when executing on an ideal processor following the rules
+stated above. Obviously ideal processors like this always aren't achievable, the
+ILP for a program will be different on actual real-world processors. ILP gives
+us a value, however, for the parallel nature of program - defining how many
+true dependencies exist within the code.</p>
+<p>The steps to acquire the ILP of a program are:</p>
+<ol>
+<li>Rename the registers, as shown previously.</li>
+<li>&quot;Execute&quot; the code on the ideal processor.</li>
+</ol>
+<h2><a class="header" href="#ilp-example" id="ilp-example">ILP example</a></h2>
+<p>The below excerpt from the lectures showcases how we can compute the ILP for a
+given set of instructions: <code>ILP == num instructions/cycles</code>. In this example,
+the professor identifies the true dependencies that exists for the set of
+instructions and sees that the fifth instruction cannot execute until the writes
+of instruction one and three are complete. Thus, this program will take 2 cycles
+on an ideal processor to execute.</p>
+<p>A neat trick that is described in the lecture is that we don't even have to
+conduct register renaming in order to calculate the ILP. All we have to do is
+identify the true dependencies - the register renaming will take care of the
+false or name dependencies for us.</p>
+<p><img src="lesson6/./img/ilp-example.png" alt="ilp-example" /></p>
+<h2><a class="header" href="#ilp-quiz" id="ilp-quiz">ILP quiz</a></h2>
+<p>Below is a quiz from the lectures showcase the technique for calculating ILP
+described above. We don't conduct register renaming, we just identify the true
+dependencies to determine on what cycle instructions are eligible to execute.
+After we determine the minimum number of cycles to resolve the true
+dependencies, we can find the ILP of the program.</p>
+<p><img src="lesson6/./img/ilp-quiz.png" alt="ilp-quiz" /></p>
+<h2><a class="header" href="#calculating-ilp-with-structural-and-control-dependencies" id="calculating-ilp-with-structural-and-control-dependencies">Calculating ILP with structural and control dependencies</a></h2>
+<p>When calculating ILP, we don't account for <strong>structural dependencies</strong>. These
+dependencies result for architectural issues like not having an adder available
+for a specific operation, etc. Something outside of the programmer's control,
+solely relies with the manufacturing of the processor.</p>
+<p>For <strong>control dependencies</strong>, we essentially ignore them. We assume that we
+have perfect same-cycle branch prediction. In the example below, we show that
+a branch instruction has a data dependency on instructions prior to it, however,
+because we have perfect branch prediction we know that we will jump to the
+<code>Label</code>. Thus, we fetch the instructions from the <code>Label</code> and execute them, even
+though our branch has not been executed, yet.</p>
+<p><img src="lesson6/./img/ilp-w-control-struct-deps.png" alt="ilp-w-control-struct-deps" /></p>
+<h2><a class="header" href="#ilp-vs-ipc" id="ilp-vs-ipc">ILP vs IPC</a></h2>
+<p>Below is an excerpt from the class conducting a comparison of the calculations
+for ILP vs IPC on a given example processor. The processor has some limitations
+such as: 2-issue (2 instructions / cycle), 1 MUL and 1 ADD/SUB/XOR components
+(structural limitations). With this, we calculate the ILP for the given
+instructions and then we calculate the IPC twice: once ignoring the structural
+limitations and once factoring in the structural limitations.</p>
+<p>As we can see, the IPC for a processor can only be equal to or less than the
+ILP. Real processors will have limitations and won't always be able to achieve
+the ILP of a program.</p>
+<p><img src="lesson6/./img/ilp-vs-ipc.png" alt="ilp-vs-ipc" /></p>
+<h2><a class="header" href="#ilp-vs-ipc-quiz" id="ilp-vs-ipc-quiz">ILP vs IPC quiz</a></h2>
+<p>Below is a quiz from the lecture that shows us how to calculate and compare the
+ILP and IPC of a program for a given test processor. Note, the processor in this
+example can only dispatch instructions <strong>in order</strong>, thus degrading our
+performance in comparison with the out of order processor's we've seen in the
+past. This limitation causes us to have to stop dispatching instructions when we
+encounter a dependency.</p>
+<p><img src="lesson6/./img/ilp-v-ipc-quiz.png" alt="ilp-v-ipc-quiz" /></p>
+<h2><a class="header" href="#ilp-vs-ipc-discussion" id="ilp-vs-ipc-discussion">ILP vs IPC discussion</a></h2>
+<p>This slide sorta restates what we covered earlier - a summary, essentially. The
+ILP can only be calculated using the abstract concept of an ideal processor, and
+it's generally representative of the best performance of a program. The ILP
+will always be greater than or equal to the IPC, and the IPC is calculated using
+an actual processor with issue and structural limitations.</p>
+<p>The limitations for processors and how they affect IPC breaks down like this:</p>
+<ul>
+<li>If a processor <strong>narrowly issues</strong> instructions (1 - 2 instructions / cycle),
+and only executes instructions <strong>in order</strong>, the processor will mostly be
+limited by the <strong>narrowly issued</strong> attribute.</li>
+<li>If a processor <strong>widely issues</strong> instructions (4 or more instructions / cycle)
+, and only executes instructions <strong>in order</strong>, the processor will mostly be
+limited by the <strong>in order</strong> attribute.</li>
+<li>The <em>best</em> case is when the processor <strong>widely issues</strong> instructions but also
+can execute instructions <strong>out of order</strong>. To do this, the processor will have
+to dispatch a lot of instructions per cycle, eliminate false dependencies
+through register renaming, and reorder instructions so they can be executed out
+of order.</li>
+</ul>
+<p><img src="lesson6/./img/ilp-v-ipc-discussion.png" alt="ilp-v-ipc-discussion" /></p>
 
                     </main>
 

@@ -14,3 +14,6 @@
   - [Tournament Predictor](./lesson4/tournament-predictor.md)
   - [Return Address Stack](./lesson4/return-address-stack.md)
 - [Predication](./lesson5/predication.md)
+- [Instruction Level Parallelism](./lesson6/ilp.md)
+  - [False Dependencies](./lesson6/false-deps.md)
+  - [What is ILP?](./lesson6/what-is-ilp.md)

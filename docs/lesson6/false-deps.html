@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>PShare</title>
+        <title>False Dependencies</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="../lesson4/pshare.html" class="active"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="../lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item expanded "><a href="../lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item expanded "><a href="../lesson6/ilp.html"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson6/false-deps.html"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item expanded "><a href="../lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="../lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="../lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item expanded "><a href="../lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item expanded "><a href="../lesson6/ilp.html"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson6/false-deps.html" class="active"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item expanded "><a href="../lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -159,64 +159,93 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#pshare-and-gshare" id="pshare-and-gshare">PShare and GShare</a></h1>
-<p>The tail end of the
-<a href="./lesson4/../history-based-predictors.html">history based predictor</a> lesson
-describes the beginnings of what's known as the <strong>PShare</strong>  predictor. What
-does PShare stand for? <strong>Private</strong> history for each branch and
-<strong>Shared</strong> counters so that different histories and counters might share the
-same counter. The PShare predictor is good for flip-floppy branch outcomes and
-8-iteration loops.</p>
-<p>In contrast, we have <strong>GShare</strong> with <strong>Global</strong> history and <strong>shared</strong> counters.
-What does global history mean? It means we have single history that is used to
-predict all branch outcomes. So every history, regardless of program counter,
-is used to calculate the counter for prediction. The GShare predictor is good
-for <strong>correlated branches</strong>.</p>
-<p>What's a correlated branch? These are branches whose decisions rely upon what
-other branches in the program are doing. An example is provided in the excerpt
-below, showcasing a decision statement where one of two actions will take place
-depending upon the value of a <code>shape</code> variable. Only one branch will evaluate to
-try, thus they are correlated branches.</p>
-<p><img src="./img/pshare-gshare.png" alt="pshare-gshare" /></p>
-<h2><a class="header" href="#pshare-vs-gshare-quiz" id="pshare-vs-gshare-quiz">PShare vs GShare Quiz</a></h2>
-<p>Below is a quiz excerpt from the class explaining the differences between
-PShare and GShare. Given some C code, we are provided what the C code would
-resemble in assembly and then asked to determine how many bits of history
-would be required to support the branches in the code using both PShare and
-GShare.</p>
-<p>The quiz demonstrates that it would be easy to predict the first and last
-branches and that they don't require any history support. The first branch will
-have the outcome of not taken 1000 times, and the last branch will have the
-outcome of taken 1000 times. The second branch, however, will flip-flop between
-taken and not taken, as each different integer will evaluate as even or odd.
-Thus our PShare predictor will need <code>1</code> bit of history to support perfect
-prediction of this branch's outcomes.</p>
-<p>In contrast, GShare will require <code>3</code> bits of history to support the branches on
-a global scale and in order to correctly predict the branch outcomes. Again,
-the first and last branch outcomes are unlikely to change, however, the second
-branch will flip-flop thus we need <code>3</code> bits of history to represent the
-correlation between these branches. When we see that the first branch was not
-taken, we'll also see the second branch either being taken or not taken, and
-if the first branch wasn't taken we know that the third branch is taken.</p>
-<p><img src="./img/pshare-vs-gshare.png" alt="pshare-vs-gshare" /></p>
-<h2><a class="header" href="#pshare-or-gshare" id="pshare-or-gshare">PShare or GShare</a></h2>
-<p>Historically, designers would pick one or the other of these history based
-predictors. Eventually, designers realized they would need to use both as GShare
-works well with predicting correlated branches and PShare works better with
-self similar branches.</p>
+                        <h1><a class="header" href="#false-dependencies" id="false-dependencies">False Dependencies</a></h1>
+<p>We covered this in previous portions of this notebook, but we'll go over the
+dependency types once again. We have <strong>true</strong> dependencies and <strong>false</strong> or
+<strong>name</strong> dependencies. A true dependency is the RAW (read after write)
+dependency - pretty obvious because this is how the program is actually intended
+to execute. Both the WAR (write after read) and WAW (write after write)
+dependencies are false dependencies. In both of these dependencies, we are
+re-using registers for instructions when we could change the registers being
+used to eliminate the false dependencies completely.</p>
+<h2><a class="header" href="#duplicating-register-values" id="duplicating-register-values">Duplicating register values</a></h2>
+<p>This is a complicated technique in which we save multiple <strong>versions</strong> of a
+value for a register that is being written to. In the excerpt below, two
+different writes occur for the register: <code>R4</code>. This register is used in two
+different read operations, but what value will be used if the register is
+written twice?</p>
+<p>To remove the hazard posed by this WAW dependency, we store both versions of
+<code>R4</code> and then each read operation will utilize the appropriate version based
+upon the chronological order of the writes. The third instruction in this
+example will use the outcome of the write in instruction two for its read
+operation, even though instruction four writes to <code>R4</code> before instruction two
+does. A future instruction will use the most previous version of <code>R4</code> for its
+read operation, even though the write by instruction two occurs after the write
+by instruction four.</p>
+<p>Essentially, we are keeping track of all possible versions of a register in a
+parallel pipeline and different read operations that require the value of
+register will use the value generated by the most recent write operation.</p>
+<p><img src="./img/duping-registers.png" alt="duping-registers" /></p>
+<h2><a class="header" href="#register-renaming" id="register-renaming">Register renaming</a></h2>
+<p>So duplicating and managing register values can get pretty complicated and time
+consuming. Another technique processors can use to remove hazards created by
+data dependencies is <strong>register renaming</strong>.</p>
+<p>In the below excerpt from the lectures, we define some terms:</p>
+<ul>
+<li><strong>architectural registers</strong> - these are register names used by the programmer
+and the compiler.</li>
+<li><strong>physical registers</strong> - these are the physical registers available to the
+processor to actually store real values.</li>
+<li><strong>register allocation table</strong> - this is a table used by the processor to
+translate architectural register names to physical registers. This table defines
+which physical register contains the data for a specified architectural
+register.</li>
+</ul>
+<p>The processor rewrites the program it's executing to use the physical registers.
+Through register renaming, it will have more registers available to store values
+and avoid hazards presented by data dependencies.</p>
+<p><img src="./img/register-renaming.png" alt="register-renaming" /></p>
+<h2><a class="header" href="#rat-example" id="rat-example">RAT example</a></h2>
+<p>The below excerpt from the class showcases how a RAT works. Each time a new
+value is produced, a different physical register is used to store that value.
+Values for registers that are being read are acquired from the RAT after it
+translates the architectural name to the physical register. We call the WAW and
+WAR dependencies name dependencies because the name is the whole problem. If we
+rename the register that the value is being written to for each write, the
+instructions won't overwrite the work of the other instructions if they're
+executing in parallel.</p>
+<p>In this example, we can see that each write increments the physical register
+number that's being written to. This removes the hazard of a register being
+overwritten by a later instruction before an earlier instruction can conduct
+its write. Because the writes are to different physical registers, when an
+instruction is decoded and needs to read a register, the value it's reading is
+going to be from the instruction prior, not the most recent write to the
+register.</p>
+<p><img src="./img/rat-example.png" alt="rat-example" /></p>
+<h2><a class="header" href="#register-renaming-quiz" id="register-renaming-quiz">Register renaming quiz</a></h2>
+<p>Below is a quiz for register renaming from the lectures. Pretty straightforward.</p>
+<p><img src="./img/register-renaming-quiz.png" alt="register-renaming-quiz" /></p>
+<h2><a class="header" href="#false-dependencies-after-renaming" id="false-dependencies-after-renaming">False dependencies after renaming</a></h2>
+<p>So does renaming actually remove our WAR and WAW dependencies? Yes! In the below
+excerpt from the lectures we are shown a program that contains a set of
+dependencies for each instruction. Because each instruction has these
+dependencies, they must be executed in order, causing us to have a CPI of <code>1</code>.
+However, with renaming, we are able to eliminate the WAR and WAW dependencies
+improving our performance to a CPI of <code>0.33</code>.</p>
+<p><img src="./img/after-renaming.png" alt="after-renaming" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../lesson4/history-based-predictors.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../lesson6/ilp.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../lesson4/tournament-predictor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../lesson6/what-is-ilp.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -228,13 +257,13 @@ self similar branches.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../lesson4/history-based-predictors.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../lesson6/ilp.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="../lesson4/tournament-predictor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../lesson6/what-is-ilp.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

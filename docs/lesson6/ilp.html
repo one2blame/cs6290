@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>PShare</title>
+        <title>Instruction Level Parallelism</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="../lesson4/pshare.html" class="active"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="../lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item expanded "><a href="../lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item expanded "><a href="../lesson6/ilp.html"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson6/false-deps.html"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item expanded "><a href="../lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="../lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="../lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item expanded "><a href="../lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item expanded "><a href="../lesson6/ilp.html" class="active"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson6/false-deps.html"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item expanded "><a href="../lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -159,64 +159,64 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#pshare-and-gshare" id="pshare-and-gshare">PShare and GShare</a></h1>
-<p>The tail end of the
-<a href="./lesson4/../history-based-predictors.html">history based predictor</a> lesson
-describes the beginnings of what's known as the <strong>PShare</strong>  predictor. What
-does PShare stand for? <strong>Private</strong> history for each branch and
-<strong>Shared</strong> counters so that different histories and counters might share the
-same counter. The PShare predictor is good for flip-floppy branch outcomes and
-8-iteration loops.</p>
-<p>In contrast, we have <strong>GShare</strong> with <strong>Global</strong> history and <strong>shared</strong> counters.
-What does global history mean? It means we have single history that is used to
-predict all branch outcomes. So every history, regardless of program counter,
-is used to calculate the counter for prediction. The GShare predictor is good
-for <strong>correlated branches</strong>.</p>
-<p>What's a correlated branch? These are branches whose decisions rely upon what
-other branches in the program are doing. An example is provided in the excerpt
-below, showcasing a decision statement where one of two actions will take place
-depending upon the value of a <code>shape</code> variable. Only one branch will evaluate to
-try, thus they are correlated branches.</p>
-<p><img src="./img/pshare-gshare.png" alt="pshare-gshare" /></p>
-<h2><a class="header" href="#pshare-vs-gshare-quiz" id="pshare-vs-gshare-quiz">PShare vs GShare Quiz</a></h2>
-<p>Below is a quiz excerpt from the class explaining the differences between
-PShare and GShare. Given some C code, we are provided what the C code would
-resemble in assembly and then asked to determine how many bits of history
-would be required to support the branches in the code using both PShare and
-GShare.</p>
-<p>The quiz demonstrates that it would be easy to predict the first and last
-branches and that they don't require any history support. The first branch will
-have the outcome of not taken 1000 times, and the last branch will have the
-outcome of taken 1000 times. The second branch, however, will flip-flop between
-taken and not taken, as each different integer will evaluate as even or odd.
-Thus our PShare predictor will need <code>1</code> bit of history to support perfect
-prediction of this branch's outcomes.</p>
-<p>In contrast, GShare will require <code>3</code> bits of history to support the branches on
-a global scale and in order to correctly predict the branch outcomes. Again,
-the first and last branch outcomes are unlikely to change, however, the second
-branch will flip-flop thus we need <code>3</code> bits of history to represent the
-correlation between these branches. When we see that the first branch was not
-taken, we'll also see the second branch either being taken or not taken, and
-if the first branch wasn't taken we know that the third branch is taken.</p>
-<p><img src="./img/pshare-vs-gshare.png" alt="pshare-vs-gshare" /></p>
-<h2><a class="header" href="#pshare-or-gshare" id="pshare-or-gshare">PShare or GShare</a></h2>
-<p>Historically, designers would pick one or the other of these history based
-predictors. Eventually, designers realized they would need to use both as GShare
-works well with predicting correlated branches and PShare works better with
-self similar branches.</p>
+                        <h1><a class="header" href="#instruction-level-parallelism-ilp" id="instruction-level-parallelism-ilp">Instruction Level Parallelism (ILP)</a></h1>
+<h2><a class="header" href="#parallel-instruction-execution" id="parallel-instruction-execution">Parallel instruction execution</a></h2>
+<p>The below excerpt from the lectures showcases the hazards that can manifest due
+to data dependencies in parallel processor pipelines. As you can see here
+multiple instructions are destined to be executed and, if all instructions are
+able to be executed in parallel, it will take 5 cycles to execute a number of
+instructions. As the number of instructions approaches infinity, our CPI
+approaches <code>0</code>.</p>
+<p>This isn't realistic - some instructions will depend upon earlier instructions
+to write values to registers before the instruction is executed. If this isn't
+done, we will encounter data hazards wherein the registers we use for our
+instructions will contain stale values, ultimately causing the program to
+execute incorrectly.</p>
+<p><img src="./img/same-cycle-ints.png" alt="same-cycle-ints" /></p>
+<h2><a class="header" href="#the-execute-stage" id="the-execute-stage">The execute stage</a></h2>
+<p>In previous sections of this notebook we discussed forwarding, a technique that
+can be used to resolve data dependencies and remove hazards. Unfortunately, this
+technique wont' work for us when we're executing instructions in parallel. The
+instruction that contains the data dependency will not receive the outcome of
+the forwarded instruction before it executes because they are executed in
+parallel.</p>
+<p>In order to remove the hazard related to this data dependency, we must stall
+the instruction until the previous instruction executes. Then, we will forward
+the result of the executed instruction to the dependent instruction. This will
+increase our CPI.</p>
+<p><img src="./img/the-execute-stage.png" alt="the-execute-stage" /></p>
+<h2><a class="header" href="#raw-dependencies" id="raw-dependencies">RAW dependencies</a></h2>
+<p>The below excerpt from the lectures showcases how we can calculate the CPI
+for a set of instructions based upon the number of data dependencies that exists
+between them. As you can see, the more RAW dependencies that exist, the higher
+our CPI.</p>
+<p><img src="./img/raw-deps.png" alt="raw-deps" /></p>
+<h2><a class="header" href="#waw-dependencies" id="waw-dependencies">WAW dependencies</a></h2>
+<p>The below excerpt from the lectures showcases how a WAW dependency can manifest
+due to a RAW dependency in previous instructions. The WAW dependency poses a
+hazard because the previous instruction is stalled due to a RAW dependency. If
+this goes ignored, the dependent instruction in the WAW dependency will write to
+a register before the previous write, executing instructions out of order. In
+order to solve this, the dependent instruction must be stalled twice so that the
+previous instruction can write.</p>
+<p><img src="./img/waw-deps.png" alt="waw-deps" /></p>
+<h2><a class="header" href="#dependency-quiz" id="dependency-quiz">Dependency quiz</a></h2>
+<p>Below is a quiz from the lectures in the class that showcases how multiple RAW
+and WAW dependencies are handled in the processor pipeline.</p>
+<p><img src="./img/dep-quiz.png" alt="dep-quiz" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../lesson4/history-based-predictors.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../lesson5/predication.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../lesson4/tournament-predictor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../lesson6/false-deps.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -228,13 +228,13 @@ self similar branches.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../lesson4/history-based-predictors.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../lesson5/predication.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="../lesson4/tournament-predictor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../lesson6/false-deps.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
