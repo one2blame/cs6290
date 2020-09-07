@@ -17,3 +17,8 @@
 - [Instruction Level Parallelism](./lesson6/ilp.md)
   - [False Dependencies](./lesson6/false-deps.md)
   - [What is ILP?](./lesson6/what-is-ilp.md)
+- [Instruction Scheduling](./lesson7/instruction-scheduling.md)
+  - [Tomasulo's Algorithm - Issuing](./lesson7/issuing.md)
+  - [Tomasulo's Algorithm - Dispatching](./lesson7/dispatching.md)
+  - [Tomasulo's Algorithm - Writing](./lesson7/writing.md)
+  - [Tomasulo's Algorithm - Review](./lesson7/review.md)

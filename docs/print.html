@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item expanded "><a href="lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item expanded "><a href="lesson6/ilp.html"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson6/false-deps.html"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item expanded "><a href="lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item expanded "><a href="lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item expanded "><a href="lesson6/ilp.html"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson6/false-deps.html"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item expanded "><a href="lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li><li class="chapter-item expanded "><a href="lesson7/instruction-scheduling.html"><strong aria-hidden="true">7.</strong> Instruction Scheduling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="lesson7/issuing.html"><strong aria-hidden="true">7.1.</strong> Tomasulo's Algorithm - Issuing</a></li><li class="chapter-item expanded "><a href="lesson7/dispatching.html"><strong aria-hidden="true">7.2.</strong> Tomasulo's Algorithm - Dispatching</a></li><li class="chapter-item expanded "><a href="lesson7/writing.html"><strong aria-hidden="true">7.3.</strong> Tomasulo's Algorithm - Writing</a></li><li class="chapter-item expanded "><a href="lesson7/review.html"><strong aria-hidden="true">7.4.</strong> Tomasulo's Algorithm - Review</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -1506,6 +1506,279 @@ through register renaming, and reorder instructions so they can be executed out
 of order.</li>
 </ul>
 <p><img src="lesson6/./img/ilp-v-ipc-discussion.png" alt="ilp-v-ipc-discussion" /></p>
+<h1><a class="header" href="#instruction-scheduling" id="instruction-scheduling">Instruction Scheduling</a></h1>
+<p>This lesson covers how <strong>instruction scheduling</strong> allows us to execute programs
+faster by dispatching more than one instruction per cycle while also handling
+data dependencies.</p>
+<h2><a class="header" href="#improving-ipc" id="improving-ipc">Improving IPC</a></h2>
+<p>As we've seen in previous lectures, there are multiple ways for us to improve
+IPC:</p>
+<ul>
+<li><strong>Handling control dependencies</strong> - if we have good <strong>branch prediction</strong> we
+can better handle control dependencies, allowing us to fetch the correct
+instructions and avoid wasting cycles.</li>
+<li><strong>false data dependencies</strong> - when we encounter false or name dependencies
+(WAR and WAW), we use <strong>register renaming</strong> to completely eliminate the hazards
+posed by these data dependencies.</li>
+<li><strong>true data dependencies</strong> - we can improve our performance even when RAW
+dependencies are present using <strong>out-of-order</strong> execution. We find instructions
+that are not dependent upon the writes of previous instructions and execute
+those while we wait for the results of an instruction to be forwarded to
+dependent instructions.</li>
+<li><strong>structural dependencies</strong> - to improve our performance we must use wider
+issuing processors - we'll be able to dispatch more instructions because we'll
+have more resources available.</li>
+</ul>
+<h2><a class="header" href="#tomasulos-algorithm" id="tomasulos-algorithm">Tomasulo's algorithm</a></h2>
+<p>Tomasulo's algorithm is the basis for modern processors' implementation of
+out-of-order execution. It solves the requirements for <strong>register renaming</strong>,
+and is able to determine which instructions have input ready and which
+instructions are dependent upon pending writes. Below is an excerpt from the
+class describing what the differences are between Tomasulo's algorithm and how
+modern processors are designed.</p>
+<p><img src="lesson7/./img/tomasulos-algorithm.png" alt="tomasulos-algorithm" /></p>
+<h2><a class="header" href="#tomasulos-algorithm---the-big-picture" id="tomasulos-algorithm---the-big-picture">Tomasulo's algorithm - the big picture</a></h2>
+<p>Below is an excerpt from the class drawing out the components that comprise
+Tomasulo's algorithm. There are a lot of moving parts and they'll be broken
+down into more detail later - right now we're just summarizing the pieces. Here
+is a quick description of all of the parts:</p>
+<ul>
+<li><strong>instruction queue</strong> - the instruction queue is pretty self explanatory, this
+is where instructions sit and wait to be <strong>issued</strong> - they are fetched from
+memory.</li>
+<li><strong>reservation station</strong> - Tomasulo's algorithm was designed for floating point
+instructions, so this is where those types of instructions wait for their
+required values before being <strong>dispatched</strong>. The reservation stations are split
+into simple instructions that require and adder and more complex instructions
+that might require a multiplier. Reservation stations enable Tomasulo's
+algorithm to determine which instructions are ready to execute - implementing
+out-of-order execution.</li>
+<li><strong>registers</strong> - once instructions are dispatched from the reservation stations
+, the values they generate are written (<strong>broadcasted</strong>) to the registers.
+Instructions in other reservation stations will be able to acquire their
+forwarded values so that they can be dispatched as well.</li>
+</ul>
+<p>On the left-hand side of this picture, you'll see that there's logic to cover
+load and store instructions as well. These were not handled by Tomasulo's
+algorithm, but modern processors now handle all instruction types similar to
+Tomasulo's algorithm. The results of the load and store instructions are also
+<strong>broadcasted</strong> so that other instructions waiting to be dispatched can take
+advantage of the values before they are written.</p>
+<p>There are three stages of Tomasulo's algorithm:</p>
+<ul>
+<li><strong>issue</strong> - this is when an instruction is sorted from the instruction queue
+into either load / store or a floating point instruction.</li>
+<li><strong>dispatch</strong> - this is when an instruction is actually executing using
+processor resources.</li>
+<li><strong>write result (broadcast)</strong> - this is when the result of the instruction is
+written to the registers file for later use by dependent instructions.</li>
+</ul>
+<p><strong>Note</strong> - the instructions in the reservation stations also have two inputs
+per station to receive broadcasts. This is to provide dependent instructions
+with the necessary values to be dispatched as early as possible.</p>
+<p><img src="lesson7/./img/the-big-picture.png" alt="the-big-picture" /></p>
+<h1><a class="header" href="#issuing" id="issuing">Issuing</a></h1>
+<p>Here are the steps that occur for <strong>issuing</strong> in Tomasulo's algorithm:</p>
+<ul>
+<li>Take the next instruction, in program order, from the instruction queue.
+<ul>
+<li>This must be done in program order in order for register renaming to work
+correctly.</li>
+</ul>
+</li>
+<li>Determine where input for an instruction originates.
+<ul>
+<li>Are the inputs required located in the register file? Or are we still
+waiting on an instruction to generate the necessary values? If we need to wait
+for an instruction, which one? This will utilize a RAT.</li>
+</ul>
+</li>
+<li>Find a free reservation station of the correct type (addr or mult).
+<ul>
+<li>If all the reservation stations are busy, no instructions are issued this
+cycle.</li>
+</ul>
+</li>
+<li>Put the instruction in the reservation station.</li>
+<li>Tag the destination register for the result of the instruction being issued.
+<ul>
+<li>This allows instructions who need this result to be able to reference the
+correct name and identify their dependency.</li>
+</ul>
+</li>
+</ul>
+<h2><a class="header" href="#issuing-example" id="issuing-example">Issuing example</a></h2>
+<p>Below is an excerpt from the class that showcases how issuing works. Each
+instruction is issued from the example instruction queue, and the instruction
+queue is shifted when an instruction is successfully issued. The are plenty of
+reservation stations available, so no instructions had to wait in order to
+acquire a spot in a station.</p>
+<p>Following the steps above, before an instruction is issued its inputs must be
+translated using the RAT. If the value is available, the instruction will
+read the input directly from the register file. The values that instructions
+generate will be renamed and the RAT will contain the name of the reservation
+station for generated values. This way, when other instructions that depend upon
+a register value are issued, they will use the input generated from other
+instructions by using their reservation station name.</p>
+<p><img src="lesson7/./img/issue-example.png" alt="issue-example" /></p>
+<h2><a class="header" href="#issue-quiz" id="issue-quiz">Issue quiz</a></h2>
+<p>Below is a quiz from the lectures where we practice the issuing portion of
+Tomasulo's algorithm. In this example, we are unable to issue the second
+instruction because there are no spots left in the reservation stations. This
+example is pretty straightforward.</p>
+<p><img src="lesson7/./img/issue-quiz.png" alt="issue-quiz" /></p>
+<h1><a class="header" href="#dispatching" id="dispatching">Dispatching</a></h1>
+<p>Below is an excerpt from the class that showcases how dispatching works. The
+results of an instruction from a reservation station is broadcast - its
+generating reservation station number is attached to the value that it's
+generating. Instructions that depend upon a value from that reservation station
+are able to acquire the values necessary to be dispatched, and they will also
+broadcast their results in the same manner.</p>
+<p><img src="lesson7/./img/dispatch-example.png" alt="dispatch-example" /></p>
+<h2><a class="header" href="#dispatching-when--1-instruction-is-ready" id="dispatching-when--1-instruction-is-ready">Dispatching when &gt; 1 instruction is ready</a></h2>
+<p>Below is an excerpt from the lectures displaying a situation in which more than
+one instruction in the reservation station is ready to execute. How do we go
+about making the right decision for best performance? There are three options:</p>
+<ul>
+<li><strong>Dispatching the oldest instruction first</strong> - the most fair option and most
+balanced for performance.</li>
+<li><strong>Dispatching the instruction with the most dependencies</strong> - the highest
+performance option, however, it requires us to search all reservation stations
+and determine dependencies - power hungry.</li>
+<li><strong>Randomly dispatching</strong> - not a bad option, and at some point every
+instruction will be dispatched, but performance could be degraded.</li>
+</ul>
+<p><img src="lesson7/./img/dispatch-greater-than-1.png" alt="dispatch-greater-than-1" /></p>
+<h2><a class="header" href="#dispatch-quiz" id="dispatch-quiz">Dispatch quiz</a></h2>
+<p>Below is a quiz from the lectures on dispatching. The quiz asks why the
+instruction held in <code>RS3</code> hasn't executed before the current state of the
+reservation stations. Three options are given, but only two are reasonable.</p>
+<ul>
+<li>The first option: &quot;It was issued in the previous cycle&quot; is reasonable because
+there can definitely be a time in which the instruction was issued too late so
+it didn't have time to execute.</li>
+<li>The second option: &quot;Another instruction was dispatched to the adder&quot; is
+possible because maybe <code>RS1</code> was currently executing on the adder to generate a
+value.</li>
+<li>The third option: &quot;RS2 is older than RS3&quot; is not reasonable. The whole purpose
+of Tomasulo's algorithm is to support out-of-order execution. Instructions will
+be executed as soon as their values are available, despite how old an
+instruction is.</li>
+</ul>
+<p><img src="lesson7/./img/dispatch-quiz.png" alt="dispatch-quiz" /></p>
+<h1><a class="header" href="#writing-broadcast" id="writing-broadcast">Writing (Broadcast)</a></h1>
+<p>Below is an excerpt from the lectures that shows us what happens when a result
+is written or broadcasted to the reservation stations and the register file.
+Some steps take place:</p>
+<ul>
+<li>The result is tagged with the reservation station that is generating this
+result. This combo is then emitted onto the bus.</li>
+<li>The result is written to the register file. We are able to determine what
+register is being written based upon the RAT - it will contain the name of the
+reservation station for the appropriate register.</li>
+<li>The RAT is then updated, clearing the reservation station name from the table
+and marking the location for a register as clear.</li>
+<li>The spot the instruction held in the reservation station is freed.</li>
+</ul>
+<p><img src="lesson7/./img/write-result.png" alt="write-result" /></p>
+<h2><a class="header" href="#more-than-1-broadcast" id="more-than-1-broadcast">More than 1 broadcast?</a></h2>
+<p>There are multiple possibilities that we can consider when handling multiple
+broadcasts. The first idea is to make more than one bus available - a bus for
+each dispatch unit in the processor. While that sounds like a good idea, the
+number of structural dependencies to implement this doubles for each bus -
+that's a lot of resources and more logic is needed in order to correctly direct
+the different values being generated.</p>
+<p>Another option is to give priority to one dispatch unit over the other, and this
+is the more likely case. In the example below, we give more priority to the
+slower dispatch unit. Why? Because if one dispatch unit is slower, it's more
+likely that faster dispatch units are waiting on values to be broadcasted by
+the slower one.</p>
+<p><img src="lesson7/./img/broadcast-greater-than-1.png" alt="broadcast-greater-than-1" /></p>
+<h2><a class="header" href="#stale-broadcasts" id="stale-broadcasts">Stale broadcasts</a></h2>
+<p>Can we have stale broadcasts? Is that really a thing? Not necessarily. In the
+example below we see that a broadcast is occurring for <code>RS4</code>, but there's no
+entry for that reservation station in the RAT. So where will this result be
+written to - what's its destination?</p>
+<p>We can see that <code>RS2</code> is generating a value and it has overwritten <code>F4</code>, which
+was the original destination of <code>RS4</code>'s value - this is perfectly fine and works
+as intended. <code>RS2</code> was the only instruction that depended on the output of
+<code>RS4</code>, it will have the value it needs to update <code>F4</code>. All subsequent
+instructions reading <code>F4</code> will utilize the value generated by <code>RS2</code> - the
+&quot;stale&quot; value being broadcasted by <code>RS4</code> won't cause any issues.</p>
+<p><img src="lesson7/./img/stale-broadcast.png" alt="stale-broadcast" /></p>
+<h1><a class="header" href="#review" id="review">Review</a></h1>
+<h2><a class="header" href="#part-1" id="part-1">Part 1</a></h2>
+<p>Below is a summarization of Tomasulo's algorithm. In this algorithm, for each
+instruction we are:</p>
+<ul>
+<li><strong>issuing</strong> - resolving the registers for an instruction using the RAT and
+then updating the RAT with the reservation station name of an instruction
+generating values.</li>
+<li><strong>capturing</strong> - capturing output of instructions while in the reservation
+station.</li>
+<li><strong>dispatching</strong> - dispatching ready-to-execute instructions.</li>
+<li><strong>writing results</strong> - broadcasting the results of instructions to instructions
+capturing output in the reservation station, updating the register file and the
+RAT.</li>
+</ul>
+<p>An awesome thing to note as that each of these things is happening for different
+instructions on each cycle. Every instruction is in one of these stages as we execute instructions out of order.</p>
+<p><img src="lesson7/./img/review-part-1.png" alt="review-part-1" /></p>
+<h2><a class="header" href="#part-2" id="part-2">Part 2</a></h2>
+<p>Below is an excerpt from the lecture that provides some further discussion of
+Tomasulo's algorithm. Some questions that are posed:</p>
+<ul>
+<li><strong>Can we issue and dispatch an instruction in the same cycle?</strong> - no, we
+cannot. During an issue and instruction is loaded into the reservation station,
+we won't be able to dispatch it until we identify that it is ready for
+executing. While its dependencies may be resolved when being entered into the
+reservation station, we won't know it's ready to be dispatched until the next
+cycle.</li>
+<li><strong>Can we capture and dispatch an instruction in the same cycle?</strong> - also no,
+for similar reasons as above. Once an instruction has captured all of its
+necessary values, it still needs to be marked for execution after the
+reservation stations have resolved which instructions are ready. This can happen
+if hardware support is available.</li>
+<li><strong>Can we update the RAT entry for an issue and a broadcast in the same
+cycle?</strong> - yes, the broadcast and the issue can procedures can both update the
+RAT in the same cycle, however, the issue will be the last to update the RAT.
+This way, future instructions will reference the output of the reservation
+station by the issue, not by the broadcast.</li>
+</ul>
+<p><img src="lesson7/./img/review-part-2.png" alt="review-part-2" /></p>
+<h2><a class="header" href="#one-cycle-quiz-part-1" id="one-cycle-quiz-part-1">One cycle quiz part 1</a></h2>
+<p>Below is a quiz from the lectures where we practice predicting what values will
+exist in the register file and the RAT after one cycle takes place. In this
+example we have a processor that does not allow issuing and dispatching in the
+same cycle, but does allow capturing and dispatching and updating the RAT and
+writing to the register file in the same cycle.</p>
+<p>Given the values provided for the different parts of the scheduler, we are able
+to determine that the <code>F1</code> entry in the RAT will be updated by the instruction
+being issued, and the register file entry for <code>F0</code> will be updated by the
+broadcast of <code>RS0</code>. Simultaneously, the entry for <code>F0</code> in the RAT will be
+cleared.</p>
+<p><img src="lesson7/./img/one-cycle-quiz-part-1.png" alt="one-cycle-quiz-part-1" /></p>
+<h2><a class="header" href="#one-cycle-quiz-part-2" id="one-cycle-quiz-part-2">One cycle quiz part 2</a></h2>
+<p>Below is a quiz from the lectures where we practice predicting what values will
+exist in the reservation station for a cycle of the processor pipeline. We can
+see that an instruction is issued, an instruction is freed from the reservation
+station upon dispatch, the same instruction that was just issued is able to
+capture the broadcast of the dispatched instruction.</p>
+<p><img src="lesson7/./img/one-cycle-quiz-part-2.png" alt="one-cycle-quiz-part-2" /></p>
+<h2><a class="header" href="#one-cycle-quiz-part-3" id="one-cycle-quiz-part-3">One cycle quiz part 3</a></h2>
+<p>Below is a quiz from the lectures where we predict what instruction will be
+dispatched from the reservation station in the example cycle. We can see that,
+as soon as the instruction in <code>RS1</code> captures its required value, it will be
+dispatched. The instruction in <code>RS2</code> will not be eligible for dispatch because
+this processor does not allow issuing and dispatching in the same cycle.</p>
+<p><img src="lesson7/./img/one-cycle-quiz-part-3.png" alt="one-cycle-quiz-part-3" /></p>
+<h2><a class="header" href="#tomasulos-algorithm-quiz" id="tomasulos-algorithm-quiz">Tomasulo's algorithm quiz</a></h2>
+<p>Below is a quiz from the lectures quizzing us on what is <strong>not</strong> true about
+Tomasulo's algorithm. What's not true? Tomasulo's algorithm <strong>does not</strong>
+dispatch instructions in program order and it <strong>does not</strong> write results in
+program order. Tomasulo's algorithm <strong>does</strong> <em>issue</em> instructions in program
+order.</p>
+<p><img src="lesson7/./img/tomasulos-algorithm-quiz.png" alt="tomasulos-algorithm-quiz" /></p>
 
                     </main>
 

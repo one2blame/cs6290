@@ -1,0 +1,310 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Tomasulo&#x27;s Algorithm - Review</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="../lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="../lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item expanded "><a href="../lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item expanded "><a href="../lesson6/ilp.html"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson6/false-deps.html"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item expanded "><a href="../lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li><li class="chapter-item expanded "><a href="../lesson7/instruction-scheduling.html"><strong aria-hidden="true">7.</strong> Instruction Scheduling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson7/issuing.html"><strong aria-hidden="true">7.1.</strong> Tomasulo's Algorithm - Issuing</a></li><li class="chapter-item expanded "><a href="../lesson7/dispatching.html"><strong aria-hidden="true">7.2.</strong> Tomasulo's Algorithm - Dispatching</a></li><li class="chapter-item expanded "><a href="../lesson7/writing.html"><strong aria-hidden="true">7.3.</strong> Tomasulo's Algorithm - Writing</a></li><li class="chapter-item expanded "><a href="../lesson7/review.html" class="active"><strong aria-hidden="true">7.4.</strong> Tomasulo's Algorithm - Review</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#review" id="review">Review</a></h1>
+<h2><a class="header" href="#part-1" id="part-1">Part 1</a></h2>
+<p>Below is a summarization of Tomasulo's algorithm. In this algorithm, for each
+instruction we are:</p>
+<ul>
+<li><strong>issuing</strong> - resolving the registers for an instruction using the RAT and
+then updating the RAT with the reservation station name of an instruction
+generating values.</li>
+<li><strong>capturing</strong> - capturing output of instructions while in the reservation
+station.</li>
+<li><strong>dispatching</strong> - dispatching ready-to-execute instructions.</li>
+<li><strong>writing results</strong> - broadcasting the results of instructions to instructions
+capturing output in the reservation station, updating the register file and the
+RAT.</li>
+</ul>
+<p>An awesome thing to note as that each of these things is happening for different
+instructions on each cycle. Every instruction is in one of these stages as we execute instructions out of order.</p>
+<p><img src="./img/review-part-1.png" alt="review-part-1" /></p>
+<h2><a class="header" href="#part-2" id="part-2">Part 2</a></h2>
+<p>Below is an excerpt from the lecture that provides some further discussion of
+Tomasulo's algorithm. Some questions that are posed:</p>
+<ul>
+<li><strong>Can we issue and dispatch an instruction in the same cycle?</strong> - no, we
+cannot. During an issue and instruction is loaded into the reservation station,
+we won't be able to dispatch it until we identify that it is ready for
+executing. While its dependencies may be resolved when being entered into the
+reservation station, we won't know it's ready to be dispatched until the next
+cycle.</li>
+<li><strong>Can we capture and dispatch an instruction in the same cycle?</strong> - also no,
+for similar reasons as above. Once an instruction has captured all of its
+necessary values, it still needs to be marked for execution after the
+reservation stations have resolved which instructions are ready. This can happen
+if hardware support is available.</li>
+<li><strong>Can we update the RAT entry for an issue and a broadcast in the same
+cycle?</strong> - yes, the broadcast and the issue can procedures can both update the
+RAT in the same cycle, however, the issue will be the last to update the RAT.
+This way, future instructions will reference the output of the reservation
+station by the issue, not by the broadcast.</li>
+</ul>
+<p><img src="./img/review-part-2.png" alt="review-part-2" /></p>
+<h2><a class="header" href="#one-cycle-quiz-part-1" id="one-cycle-quiz-part-1">One cycle quiz part 1</a></h2>
+<p>Below is a quiz from the lectures where we practice predicting what values will
+exist in the register file and the RAT after one cycle takes place. In this
+example we have a processor that does not allow issuing and dispatching in the
+same cycle, but does allow capturing and dispatching and updating the RAT and
+writing to the register file in the same cycle.</p>
+<p>Given the values provided for the different parts of the scheduler, we are able
+to determine that the <code>F1</code> entry in the RAT will be updated by the instruction
+being issued, and the register file entry for <code>F0</code> will be updated by the
+broadcast of <code>RS0</code>. Simultaneously, the entry for <code>F0</code> in the RAT will be
+cleared.</p>
+<p><img src="./img/one-cycle-quiz-part-1.png" alt="one-cycle-quiz-part-1" /></p>
+<h2><a class="header" href="#one-cycle-quiz-part-2" id="one-cycle-quiz-part-2">One cycle quiz part 2</a></h2>
+<p>Below is a quiz from the lectures where we practice predicting what values will
+exist in the reservation station for a cycle of the processor pipeline. We can
+see that an instruction is issued, an instruction is freed from the reservation
+station upon dispatch, the same instruction that was just issued is able to
+capture the broadcast of the dispatched instruction.</p>
+<p><img src="./img/one-cycle-quiz-part-2.png" alt="one-cycle-quiz-part-2" /></p>
+<h2><a class="header" href="#one-cycle-quiz-part-3" id="one-cycle-quiz-part-3">One cycle quiz part 3</a></h2>
+<p>Below is a quiz from the lectures where we predict what instruction will be
+dispatched from the reservation station in the example cycle. We can see that,
+as soon as the instruction in <code>RS1</code> captures its required value, it will be
+dispatched. The instruction in <code>RS2</code> will not be eligible for dispatch because
+this processor does not allow issuing and dispatching in the same cycle.</p>
+<p><img src="./img/one-cycle-quiz-part-3.png" alt="one-cycle-quiz-part-3" /></p>
+<h2><a class="header" href="#tomasulos-algorithm-quiz" id="tomasulos-algorithm-quiz">Tomasulo's algorithm quiz</a></h2>
+<p>Below is a quiz from the lectures quizzing us on what is <strong>not</strong> true about
+Tomasulo's algorithm. What's not true? Tomasulo's algorithm <strong>does not</strong>
+dispatch instructions in program order and it <strong>does not</strong> write results in
+program order. Tomasulo's algorithm <strong>does</strong> <em>issue</em> instructions in program
+order.</p>
+<p><img src="./img/tomasulos-algorithm-quiz.png" alt="tomasulos-algorithm-quiz" /></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../lesson7/writing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../lesson7/writing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
