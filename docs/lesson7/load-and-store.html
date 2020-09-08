@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Tournament Predictor</title>
+        <title>Tomasulo&#x27;s Algorithm - Load and Store</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="../lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="../lesson4/tournament-predictor.html" class="active"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item expanded "><a href="../lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item expanded "><a href="../lesson6/ilp.html"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson6/false-deps.html"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item expanded "><a href="../lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li><li class="chapter-item expanded "><a href="../lesson7/instruction-scheduling.html"><strong aria-hidden="true">7.</strong> Instruction Scheduling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson7/issuing.html"><strong aria-hidden="true">7.1.</strong> Tomasulo's Algorithm - Issuing</a></li><li class="chapter-item expanded "><a href="../lesson7/dispatching.html"><strong aria-hidden="true">7.2.</strong> Tomasulo's Algorithm - Dispatching</a></li><li class="chapter-item expanded "><a href="../lesson7/writing.html"><strong aria-hidden="true">7.3.</strong> Tomasulo's Algorithm - Writing</a></li><li class="chapter-item expanded "><a href="../lesson7/review.html"><strong aria-hidden="true">7.4.</strong> Tomasulo's Algorithm - Review</a></li><li class="chapter-item expanded "><a href="../lesson7/load-and-store.html"><strong aria-hidden="true">7.5.</strong> Tomasulo's Algorithm - Load and Store</a></li><li class="chapter-item expanded "><a href="../lesson7/timing.html"><strong aria-hidden="true">7.6.</strong> Tomasulo's Algorithm - Timing</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item expanded "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item expanded "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item expanded "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item expanded "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item expanded "><a href="../lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item expanded "><a href="../lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item expanded "><a href="../lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item expanded "><a href="../lesson6/ilp.html"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson6/false-deps.html"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item expanded "><a href="../lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li><li class="chapter-item expanded "><a href="../lesson7/instruction-scheduling.html"><strong aria-hidden="true">7.</strong> Instruction Scheduling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../lesson7/issuing.html"><strong aria-hidden="true">7.1.</strong> Tomasulo's Algorithm - Issuing</a></li><li class="chapter-item expanded "><a href="../lesson7/dispatching.html"><strong aria-hidden="true">7.2.</strong> Tomasulo's Algorithm - Dispatching</a></li><li class="chapter-item expanded "><a href="../lesson7/writing.html"><strong aria-hidden="true">7.3.</strong> Tomasulo's Algorithm - Writing</a></li><li class="chapter-item expanded "><a href="../lesson7/review.html"><strong aria-hidden="true">7.4.</strong> Tomasulo's Algorithm - Review</a></li><li class="chapter-item expanded "><a href="../lesson7/load-and-store.html" class="active"><strong aria-hidden="true">7.5.</strong> Tomasulo's Algorithm - Load and Store</a></li><li class="chapter-item expanded "><a href="../lesson7/timing.html"><strong aria-hidden="true">7.6.</strong> Tomasulo's Algorithm - Timing</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -159,32 +159,46 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#tournament-predictor" id="tournament-predictor">Tournament Predictor</a></h1>
-<p>As we discussed in the <a href="./lesson4/../pshare.html">PShare and GShare</a> section,
-designers desired to use two predictors to handle different cases of branches -
-correlated branches and branches that were self similar. But how do we determine
-which predictor will be used for a program counter (instruction) if we don't
-know what type of branch it is ahead of time?</p>
-<p>The high-level representation below explains how the GShare and PShare
-predictors are both indexed by the program counter and each predictor provides
-a predicted branch outcome for that program counter value. At the same time, we
-use the program counter to index into a <strong>meta-predictor</strong> table that has a
-2BC at each index. We use the <strong>meta-predictor</strong> to keep track of which shared
-predictor gives us the correct answer for the program counter the most often.</p>
-<p><img src="./img/tournament-predictor.png" alt="tournament-predictor" /></p>
+                        <h1><a class="header" href="#load-and-store" id="load-and-store">Load and Store</a></h1>
+<p>Now that we've discussed how Tomasulo's algorithm handles data dependencies for
+floating point instructions, how does it handle <strong>memory dependencies</strong>? Well
+first, what memory dependencies are there? They're actually the same three
+categories as data dependencies:</p>
+<ul>
+<li><strong>RAW</strong> - an instruction stores a word to some address and then a different
+instruction loads a word from that same address - this is a true dependency.</li>
+<li><strong>WAR</strong> - an instruction loads a word from memory and then another instruction
+stores a word into memory; if these instructions got re-ordered, we could
+possibly load the value from the store, thus giving us incorrect program
+execution.</li>
+<li><strong>WAW</strong> - two instructions both write to the same address; if these
+instructions are re-ordered, it's possible that a stale value is written to the
+address.</li>
+</ul>
+<p>So what do we do about this?:</p>
+<ul>
+<li>In Tomasulo's algorithm, we execute load and store instructions in order. Even
+if a load instruction is ready to execute, it will be stalled until the store
+instruction preceding it is completed - even if that store instruction is
+stalled waiting on some value.</li>
+<li>Modern processors identify dependencies, re-order load instructions, etc.
+similar to how floating point instructions are handled by Tomasulo's algorithm.
+These techniques will not be discussed in this lesson, however, they will be
+touched upon later.</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../lesson4/pshare.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../lesson7/review.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../lesson4/return-address-stack.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../lesson7/timing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -196,13 +210,13 @@ predictor gives us the correct answer for the program counter the most often.</p
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../lesson4/pshare.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../lesson7/review.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="../lesson4/return-address-stack.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../lesson7/timing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

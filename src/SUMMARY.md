@@ -22,3 +22,5 @@
   - [Tomasulo's Algorithm - Dispatching](./lesson7/dispatching.md)
   - [Tomasulo's Algorithm - Writing](./lesson7/writing.md)
   - [Tomasulo's Algorithm - Review](./lesson7/review.md)
+  - [Tomasulo's Algorithm - Load and Store](./lesson7/load-and-store.md)
+  - [Tomasulo's Algorithm - Timing](./lesson7/timing.md)
