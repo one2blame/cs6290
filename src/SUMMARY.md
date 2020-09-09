@@ -24,3 +24,8 @@
   - [Tomasulo's Algorithm - Review](./lesson7/review.md)
   - [Tomasulo's Algorithm - Load and Store](./lesson7/load-and-store.md)
   - [Tomasulo's Algorithm - Timing](./lesson7/timing.md)
+- [Reorder Buffer](./lesson8/rob.md)
+  - [ROB In Depth](./lesson8/rob-in-depth.md)
+  - [Recovery](./lesson8/recovery.md)
+  - [ROB Timing](./lesson8/rob-timing.md)
+  - [Extra Topics](./lesson8/extra-topics.md)

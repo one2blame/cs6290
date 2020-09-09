@@ -78,3 +78,7 @@ per station to receive broadcasts. This is to provide dependent instructions
 with the necessary values to be dispatched as early as possible.
 
 ![the-big-picture](./img/the-big-picture.png)
+
+## References
+
+1. [Lesson 7 Notes](./pdf/Lesson7Notes.pdf)
