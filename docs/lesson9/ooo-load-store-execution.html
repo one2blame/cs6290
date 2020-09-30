@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Return Address Stack</title>
+        <title>OOO Load/Store Execution</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item expanded "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item "><a href="../lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item "><a href="../lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item expanded "><a href="../lesson4/return-address-stack.html" class="active"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item "><a href="../lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item "><a href="../lesson6/ilp.html"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson6/false-deps.html"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item "><a href="../lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li><li class="chapter-item "><a href="../lesson7/instruction-scheduling.html"><strong aria-hidden="true">7.</strong> Instruction Scheduling</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson7/issuing.html"><strong aria-hidden="true">7.1.</strong> Tomasulo's Algorithm - Issuing</a></li><li class="chapter-item "><a href="../lesson7/dispatching.html"><strong aria-hidden="true">7.2.</strong> Tomasulo's Algorithm - Dispatching</a></li><li class="chapter-item "><a href="../lesson7/writing.html"><strong aria-hidden="true">7.3.</strong> Tomasulo's Algorithm - Writing</a></li><li class="chapter-item "><a href="../lesson7/review.html"><strong aria-hidden="true">7.4.</strong> Tomasulo's Algorithm - Review</a></li><li class="chapter-item "><a href="../lesson7/load-and-store.html"><strong aria-hidden="true">7.5.</strong> Tomasulo's Algorithm - Load and Store</a></li><li class="chapter-item "><a href="../lesson7/timing.html"><strong aria-hidden="true">7.6.</strong> Tomasulo's Algorithm - Timing</a></li></ol></li><li class="chapter-item "><a href="../lesson8/rob.html"><strong aria-hidden="true">8.</strong> Reorder Buffer</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson8/rob-in-depth.html"><strong aria-hidden="true">8.1.</strong> ROB In Depth</a></li><li class="chapter-item "><a href="../lesson8/recovery.html"><strong aria-hidden="true">8.2.</strong> Recovery</a></li><li class="chapter-item "><a href="../lesson8/rob-timing.html"><strong aria-hidden="true">8.3.</strong> ROB Timing</a></li><li class="chapter-item "><a href="../lesson8/extra-topics.html"><strong aria-hidden="true">8.4.</strong> Extra Topics</a></li></ol></li><li class="chapter-item "><a href="../lesson9/memory-ordering.html"><strong aria-hidden="true">9.</strong> Memory Ordering</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson9/load-store-queue.html"><strong aria-hidden="true">9.1.</strong> Load-Store Queue</a></li><li class="chapter-item "><a href="../lesson9/ooo-load-store-execution.html"><strong aria-hidden="true">9.2.</strong> OOO Load/Store Execution</a></li><li class="chapter-item "><a href="../lesson9/summary.html"><strong aria-hidden="true">9.3.</strong> Summary</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item "><a href="../lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item "><a href="../lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item "><a href="../lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item "><a href="../lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item "><a href="../lesson6/ilp.html"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson6/false-deps.html"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item "><a href="../lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li><li class="chapter-item "><a href="../lesson7/instruction-scheduling.html"><strong aria-hidden="true">7.</strong> Instruction Scheduling</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson7/issuing.html"><strong aria-hidden="true">7.1.</strong> Tomasulo's Algorithm - Issuing</a></li><li class="chapter-item "><a href="../lesson7/dispatching.html"><strong aria-hidden="true">7.2.</strong> Tomasulo's Algorithm - Dispatching</a></li><li class="chapter-item "><a href="../lesson7/writing.html"><strong aria-hidden="true">7.3.</strong> Tomasulo's Algorithm - Writing</a></li><li class="chapter-item "><a href="../lesson7/review.html"><strong aria-hidden="true">7.4.</strong> Tomasulo's Algorithm - Review</a></li><li class="chapter-item "><a href="../lesson7/load-and-store.html"><strong aria-hidden="true">7.5.</strong> Tomasulo's Algorithm - Load and Store</a></li><li class="chapter-item "><a href="../lesson7/timing.html"><strong aria-hidden="true">7.6.</strong> Tomasulo's Algorithm - Timing</a></li></ol></li><li class="chapter-item "><a href="../lesson8/rob.html"><strong aria-hidden="true">8.</strong> Reorder Buffer</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson8/rob-in-depth.html"><strong aria-hidden="true">8.1.</strong> ROB In Depth</a></li><li class="chapter-item "><a href="../lesson8/recovery.html"><strong aria-hidden="true">8.2.</strong> Recovery</a></li><li class="chapter-item "><a href="../lesson8/rob-timing.html"><strong aria-hidden="true">8.3.</strong> ROB Timing</a></li><li class="chapter-item "><a href="../lesson8/extra-topics.html"><strong aria-hidden="true">8.4.</strong> Extra Topics</a></li></ol></li><li class="chapter-item expanded "><a href="../lesson9/memory-ordering.html"><strong aria-hidden="true">9.</strong> Memory Ordering</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson9/load-store-queue.html"><strong aria-hidden="true">9.1.</strong> Load-Store Queue</a></li><li class="chapter-item expanded "><a href="../lesson9/ooo-load-store-execution.html" class="active"><strong aria-hidden="true">9.2.</strong> OOO Load/Store Execution</a></li><li class="chapter-item "><a href="../lesson9/summary.html"><strong aria-hidden="true">9.3.</strong> Summary</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -159,70 +159,54 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#return-address-stack-ras" id="return-address-stack-ras">Return Address Stack (RAS)</a></h1>
-<p>So far we've seen branch prediction done for branch and jump instructions, but
-what about function <code>ret</code> instructions? Functions are designed to be called
-anywhere, so their <code>ret</code> address will not always be the same location in code.
-This makes them tougher to predict using our current methods of branch
-prediction - how do we prevent from fetching instructions from the wrong
-location when returning from a function?</p>
-<p><img src="./img/return-address-stack.png" alt="return-address-stack" /></p>
-<p>The <strong>return address stack</strong> is a separate predictor used specifically for
-predicting returns. It operates similar to the process stack in that it pushes
-and pops return address for function calls onto the stack. The primary
-difference between a process stack and the RAS is that the RAS is a very small
-hardware structure designed to make a prediction very quickly.</p>
-<p>So what happens when the RAS is full and we continue to call into more
-functions? We have two options:</p>
-<ul>
-<li>Don't push any more return pointers into the RAS</li>
-<li>Wrap around and overwrite RAS entries</li>
-</ul>
-<p>So, is it better to wrap around and overwrite RAS entries? The results of a quiz
-from the class provides the justification for why it's better to wrap around
-and overwrite RAS entries. In the provided justification below, we demonstrate
-with a high-level diagram that if we don't push new entries into the RAS when
-it's full, all we're doing is saving ourselves from mis-predicting older
-functions calls for functions that aren't getting called often.</p>
-<p>In contrast, if we wrap around the entries in the RAS, we're more effectively
-using the entires we have in the RAS to correctly predict immediate function
-call returns that are more likely to happen more often.</p>
-<p><img src="./img/ras-quiz.png" alt="ras-quiz" /></p>
-<h2><a class="header" href="#so-how-do-we-know-the-instruction-is-a-ret" id="so-how-do-we-know-the-instruction-is-a-ret">So how do we know the instruction is a <code>ret</code>?</a></h2>
-<p>Right, we can't push and pop values to/from the RAS without knowing if the
-instruction is actually a <code>ret</code>, and we only learn what the instruction is if
-we fetch and decode. Two methods exist:</p>
-<ul>
-<li>We can use a predictor to determine if the program counter contains a <code>ret</code>.
-Once the program counter is seen, we now know this program counter contains an
-instruction that is a <code>ret</code> and we can then push the value onto the RAS.</li>
-<li>We can use <strong>pre-decoding</strong>!
-<ul>
-<li>The processor contains a cache that stores instructions that have been
-fetched from memory. The processor fetches instructions from the cache unless
-the processor incurs a cache miss - then the process will access memory to
-acquire the next instruction.</li>
-<li>Pre-decoding is a process in which we access memory to acquire the next
-instruction, and as we acquire the next instruction we decode a little bit of it
-to determine if it's a <code>ret</code> instruction. If it is, we store this information 
-with the instruction in the cache.</li>
-</ul>
-</li>
-</ul>
-<p><img src="./img/pre-decoding.png" alt="pre-decoding" /></p>
+                        <h1><a class="header" href="#ooo-loadstore-execution" id="ooo-loadstore-execution">OOO Load/Store Execution</a></h1>
+<p>The below example discusses the intricacies of out-of-order execution of load
+and store instructions. In the example provided, the <code>sub</code> operation is able
+to execute out-of-order because it has no dependencies. Once it produces a value
+for <code>R1</code>, we execute the dependent <code>load</code> instruction. Meanwhile, the first
+<code>load</code> in the queue encountered a cache miss and is waiting memory addressed by
+<code>R6</code> to be loaded.</p>
+<p>When the first <code>load</code> instruction finally completes, the dependent store
+instruction resolves its target address with the previous <code>add</code> and notices that
+the succeeding <code>load</code> also target the same address. Thus, the succeeding <code>load</code>
+instruction loaded a stale value from memory and the instructions in the
+queue need to be invalidated.</p>
+<p><img src="./img/ooo-load-store-execution.png" alt="ooo-load-store-execution" /></p>
+<h2><a class="header" href="#in-order-loadstore-execution" id="in-order-loadstore-execution">In-order Load/Store Execution</a></h2>
+<p>In contrast, an example is provided for in-order load and store execution of the
+load/store queue. It discusses how we can dispatch non-load and non-store
+instructions for execution if they contain no dependencies. However, this model
+still enforces that load/store instructions execute in order so, even if we have
+our target address calculated, all preceding store instructions must commit
+before we can load.</p>
+<p>In this example, the first <code>load</code> instruction encounters a cache miss and also
+resolves a dependency for the preceding arithmetic operation. Thus, the
+succeeding <code>store</code> operation is also stalled. The <code>sub</code> operation further down
+in the queue is able to be dispatched out-of-order, the <code>load</code> operation,
+however, cannot proceed because the previous <code>store</code> operation has not taken
+place.</p>
+<p>While this may avoid us having to <strong>recover</strong> if the last <code>load</code> reads stale
+values, this also prevents us from leveraging a performance increase if the last
+<code>load</code> didn't actually depend on the preceding <code>store</code>.</p>
+<p><img src="./img/in-order-load-store-execution.png" alt="in-order-load-store-execution" /></p>
+<h2><a class="header" href="#memory-ordering-quiz" id="memory-ordering-quiz">Memory ordering quiz</a></h2>
+<p>In this quiz we are instructed to determine how many cycles it would take to
+execute the instructions in the provided load-store queue in-order if all <code>load</code>
+instructions encountered a cache miss of <code>40</code> cycles.</p>
+<p><img src="./img/memory-ordering-quiz.png" alt="memory-ordering-quiz" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../lesson4/tournament-predictor.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../lesson9/load-store-queue.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../lesson5/predication.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../lesson9/summary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -234,13 +218,13 @@ with the instruction in the cache.</li>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../lesson4/tournament-predictor.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../lesson9/load-store-queue.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="../lesson5/predication.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../lesson9/summary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
