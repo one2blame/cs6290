@@ -29,3 +29,7 @@
   - [Recovery](./lesson8/recovery.md)
   - [ROB Timing](./lesson8/rob-timing.md)
   - [Extra Topics](./lesson8/extra-topics.md)
+- [Memory Ordering](./lesson9/memory-ordering.md)
+  - [Load-Store Queue](./lesson9/load-store-queue.md)
+  - [OOO Load/Store Execution](./lesson9/ooo-load-store-execution.md)
+  - [Summary](./lesson9/summary.md)
