@@ -33,3 +33,8 @@
   - [Load-Store Queue](./lesson9/load-store-queue.md)
   - [OOO Load/Store Execution](./lesson9/ooo-load-store-execution.md)
   - [Summary](./lesson9/summary.md)
+- [Compiler ILP](./lesson10/compiler-ilp.md)
+  - [Tree Height Reduction](./lesson10/tree-height-reduction.md)
+  - [Instruction Scheduling](./lesson10/instruction-scheduling.md)
+  - [Loop Unrolling](./lesson10/loop-unrolling.md)
+  - [Function Call Inlining](./lesson10/function-call-inlining.md)
