@@ -4,6 +4,8 @@ This lesson covers VLIW and explicitly parallel processors. These processors do
 not try to identify ILP on their own, instead doing what the compiler instructs
 them to do.
 
+The notes for this lesson can be found [here](./pdf/Lesson11Notes.pdf)
+
 ## Superscalar vs VLIW
 
 Below is an excerpt from the lectures describing the differences between
