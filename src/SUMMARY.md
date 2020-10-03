@@ -38,3 +38,4 @@
   - [Instruction Scheduling](./lesson10/instruction-scheduling.md)
   - [Loop Unrolling](./lesson10/loop-unrolling.md)
   - [Function Call Inlining](./lesson10/function-call-inlining.md)
+- [VLIW](./lesson11/vliw.md)
