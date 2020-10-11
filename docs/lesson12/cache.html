@@ -1,0 +1,317 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Cache</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><a href="../welcome.html">Welcome</a></li><li class="chapter-item "><a href="../lesson1/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item "><a href="../lesson2/metrics-and-evaluation.html"><strong aria-hidden="true">2.</strong> Metrics and Evaluation</a></li><li class="chapter-item "><a href="../lesson3/pipelining.html"><strong aria-hidden="true">3.</strong> Pipelining</a></li><li class="chapter-item "><a href="../lesson4/branches.html"><strong aria-hidden="true">4.</strong> Branches</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson4/prediction.html"><strong aria-hidden="true">4.1.</strong> Prediction</a></li><li class="chapter-item "><a href="../lesson4/branch-target-buffer.html"><strong aria-hidden="true">4.2.</strong> Branch Target Buffer</a></li><li class="chapter-item "><a href="../lesson4/direction-predictor.html"><strong aria-hidden="true">4.3.</strong> Direction Predictor</a></li><li class="chapter-item "><a href="../lesson4/2-bit-predictor.html"><strong aria-hidden="true">4.4.</strong> 2 Bit Predictor</a></li><li class="chapter-item "><a href="../lesson4/history-based-predictors.html"><strong aria-hidden="true">4.5.</strong> History Based Predictors</a></li><li class="chapter-item "><a href="../lesson4/pshare.html"><strong aria-hidden="true">4.6.</strong> PShare</a></li><li class="chapter-item "><a href="../lesson4/tournament-predictor.html"><strong aria-hidden="true">4.7.</strong> Tournament Predictor</a></li><li class="chapter-item "><a href="../lesson4/return-address-stack.html"><strong aria-hidden="true">4.8.</strong> Return Address Stack</a></li></ol></li><li class="chapter-item "><a href="../lesson5/predication.html"><strong aria-hidden="true">5.</strong> Predication</a></li><li class="chapter-item "><a href="../lesson6/ilp.html"><strong aria-hidden="true">6.</strong> Instruction Level Parallelism</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson6/false-deps.html"><strong aria-hidden="true">6.1.</strong> False Dependencies</a></li><li class="chapter-item "><a href="../lesson6/what-is-ilp.html"><strong aria-hidden="true">6.2.</strong> What is ILP?</a></li></ol></li><li class="chapter-item "><a href="../lesson7/instruction-scheduling.html"><strong aria-hidden="true">7.</strong> Instruction Scheduling</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson7/issuing.html"><strong aria-hidden="true">7.1.</strong> Tomasulo's Algorithm - Issuing</a></li><li class="chapter-item "><a href="../lesson7/dispatching.html"><strong aria-hidden="true">7.2.</strong> Tomasulo's Algorithm - Dispatching</a></li><li class="chapter-item "><a href="../lesson7/writing.html"><strong aria-hidden="true">7.3.</strong> Tomasulo's Algorithm - Writing</a></li><li class="chapter-item "><a href="../lesson7/review.html"><strong aria-hidden="true">7.4.</strong> Tomasulo's Algorithm - Review</a></li><li class="chapter-item "><a href="../lesson7/load-and-store.html"><strong aria-hidden="true">7.5.</strong> Tomasulo's Algorithm - Load and Store</a></li><li class="chapter-item "><a href="../lesson7/timing.html"><strong aria-hidden="true">7.6.</strong> Tomasulo's Algorithm - Timing</a></li></ol></li><li class="chapter-item "><a href="../lesson8/rob.html"><strong aria-hidden="true">8.</strong> Reorder Buffer</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson8/rob-in-depth.html"><strong aria-hidden="true">8.1.</strong> ROB In Depth</a></li><li class="chapter-item "><a href="../lesson8/recovery.html"><strong aria-hidden="true">8.2.</strong> Recovery</a></li><li class="chapter-item "><a href="../lesson8/rob-timing.html"><strong aria-hidden="true">8.3.</strong> ROB Timing</a></li><li class="chapter-item "><a href="../lesson8/extra-topics.html"><strong aria-hidden="true">8.4.</strong> Extra Topics</a></li></ol></li><li class="chapter-item "><a href="../lesson9/memory-ordering.html"><strong aria-hidden="true">9.</strong> Memory Ordering</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson9/load-store-queue.html"><strong aria-hidden="true">9.1.</strong> Load-Store Queue</a></li><li class="chapter-item "><a href="../lesson9/ooo-load-store-execution.html"><strong aria-hidden="true">9.2.</strong> OOO Load/Store Execution</a></li><li class="chapter-item "><a href="../lesson9/summary.html"><strong aria-hidden="true">9.3.</strong> Summary</a></li></ol></li><li class="chapter-item "><a href="../lesson10/compiler-ilp.html"><strong aria-hidden="true">10.</strong> Compiler ILP</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../lesson10/tree-height-reduction.html"><strong aria-hidden="true">10.1.</strong> Tree Height Reduction</a></li><li class="chapter-item "><a href="../lesson10/instruction-scheduling.html"><strong aria-hidden="true">10.2.</strong> Instruction Scheduling</a></li><li class="chapter-item "><a href="../lesson10/loop-unrolling.html"><strong aria-hidden="true">10.3.</strong> Loop Unrolling</a></li><li class="chapter-item "><a href="../lesson10/function-call-inlining.html"><strong aria-hidden="true">10.4.</strong> Function Call Inlining</a></li></ol></li><li class="chapter-item "><a href="../lesson11/vliw.html"><strong aria-hidden="true">11.</strong> VLIW</a></li><li class="chapter-item expanded "><a href="../lesson12/cache.html" class="active"><strong aria-hidden="true">12.</strong> Cache</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#cache" id="cache">Cache</a></h1>
+<p>This section conducts a review of the hardware cache. The notes for this lesson
+can be found <a href="./pdf/Lesson12Notes.pdf">here</a></p>
+<h2><a class="header" href="#locality" id="locality">Locality</a></h2>
+<p>Below is a high-level description from the class describing the concept of
+locality.</p>
+<p><img src="./img/locality-principle.png" alt="locality-principle" /></p>
+<p>The below image from the lectures describes the concepts of
+<strong>temporal locality</strong> and <strong>spatial locality</strong>.</p>
+<p><img src="./img/memory-references.png" alt="memory-references" /></p>
+<h2><a class="header" href="#temporal-locality-quiz" id="temporal-locality-quiz">Temporal Locality Quiz</a></h2>
+<p>The below quiz from the lectures discusses temporal locality with an example
+section of code. The <code>j</code> and <code>sum</code> variables are accessed very often, having
+temporal locality in the cache.</p>
+<p><img src="./img/temporal-locality-quiz.png" alt="temporal-locality-quiz" /></p>
+<h2><a class="header" href="#spatial-locality-quiz" id="spatial-locality-quiz">Spatial Locality Quiz</a></h2>
+<p>We are likely to access all elements of the array in this loop, thus <code>arr</code> has
+spatial locality.</p>
+<p><img src="./img/spatial-locality-quiz.png" alt="spatial-locality-quiz" /></p>
+<h2><a class="header" href="#cache-quiz" id="cache-quiz">Cache Quiz</a></h2>
+<p>The quiz below describes the concept and purpose of a processor cache.</p>
+<p><img src="./img/cache-quiz.png" alt="cache-quiz" /></p>
+<h2><a class="header" href="#cache-performance" id="cache-performance">Cache Performance</a></h2>
+<p>The below excerpt from the class describes the metrics used to measure cache
+performance.</p>
+<p><img src="./img/cache-performance.png" alt="cache-performance" /></p>
+<h2><a class="header" href="#hit-time-quiz" id="hit-time-quiz">Hit Time Quiz</a></h2>
+<p>This quiz asks some common-sense questions about the timing for a well-designed
+cache.</p>
+<p><img src="./img/hit-time-quiz.png" alt="hit-time-quiz" /></p>
+<h2><a class="header" href="#miss-rate-quiz" id="miss-rate-quiz">Miss Rate Quiz</a></h2>
+<p>This quiz asks common-sense questions on the comparison between hit rate and
+miss rate.</p>
+<p><img src="./img/miss-rate-quiz.png" alt="miss-rate-quiz" /></p>
+<h2><a class="header" href="#block-size-quiz" id="block-size-quiz">Block Size Quiz</a></h2>
+<p>The below quiz covers good use of the cache for variables with specific
+behaviors.</p>
+<p><img src="./img/block-size-quiz.png" alt="block-size-quiz" /></p>
+<h2><a class="header" href="#block-number-quiz" id="block-number-quiz">Block Number Quiz</a></h2>
+<p>The below quiz shows us how to calculate the block number.</p>
+<p><img src="./img/block-number-quiz.png" alt="block-number-quiz" /></p>
+<h2><a class="header" href="#cache-tags" id="cache-tags">Cache Tags</a></h2>
+<p>The below excerpt from the class describes cache tags.</p>
+<p><img src="./img/cache-tags.png" alt="cache-tags" /></p>
+<h2><a class="header" href="#valid-bit" id="valid-bit">Valid Bit</a></h2>
+<p>The below excerpt from the class describes the valid bit.</p>
+<p><img src="./img/valid-bit.png" alt="valid-bit" /></p>
+<h2><a class="header" href="#direct-mapped-cache" id="direct-mapped-cache">Direct Mapped Cache</a></h2>
+<p>The below excerpt from the class describes the direct mapped cache structure.</p>
+<p><img src="./img/direct-mapped-cache.png" alt="direct-mapped-cache" /></p>
+<h2><a class="header" href="#direct-mapped-cache-quiz" id="direct-mapped-cache-quiz">Direct Mapped Cache Quiz</a></h2>
+<p>The below quiz demonstrates how to find cache conflicts in direct-mapped caches.</p>
+<p><img src="./img/direct-mapped-cache-quiz.png" alt="direct-mapped-cache-quiz" /></p>
+<h2><a class="header" href="#direct-mapped-cache-quiz-1" id="direct-mapped-cache-quiz-1">Direct Mapped Cache Quiz</a></h2>
+<p>Another direct mapped cache quiz showcasing cache conflicts.</p>
+<p><img src="./img/direct-mapped-cache-quiz-2.png" alt="direct-mapped-cache-quiz-2" /></p>
+<h2><a class="header" href="#associative-cache-quiz" id="associative-cache-quiz">Associative Cache Quiz</a></h2>
+<p>The below quiz showcases how we index into an N-way associative cache with an
+address.</p>
+<p><img src="./img/associative-cache-quiz.png" alt="associative-cache-quiz" /></p>
+<h2><a class="header" href="#implementing-lru" id="implementing-lru">Implementing LRU</a></h2>
+<p>The below excerpt from the class describes how the LRU policy is implemented for
+cache line replacement.</p>
+<p><img src="./img/implementing-lru.png" alt="implementing-lru" /></p>
+<h2><a class="header" href="#lru-quiz" id="lru-quiz">LRU Quiz</a></h2>
+<p>The below quiz demonstrates the LRU cache replacement policy.</p>
+<p><img src="./img/lru-quiz.png" alt="lru-quiz" /></p>
+<h2><a class="header" href="#write-policy" id="write-policy">Write Policy</a></h2>
+<p>The below excerpt from the lecture provides a good discussion of the differences
+between cache writing policies.</p>
+<p><img src="./img/write-policy.png" alt="write-policy" /></p>
+<h2><a class="header" href="#cache-summary" id="cache-summary">Cache Summary</a></h2>
+<p>The below excerpt from the course summarizes the data used to handle an example
+cache, demonstrating how the cache structure influences the data used to track
+the tags, indices, etc.</p>
+<p><img src="./img/cache-summary.png" alt="cache-summary" /></p>
+<h2><a class="header" href="#cache-summary-quiz" id="cache-summary-quiz">Cache Summary Quiz</a></h2>
+<p>Below are the answers to the cache summary quizzes that tie all of these
+concepts together.</p>
+<p><img src="./img/cache-summary-quiz.png" alt="cache-summary-quiz" /></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../lesson11/vliw.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../lesson11/vliw.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
