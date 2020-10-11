@@ -40,3 +40,4 @@
   - [Function Call Inlining](./lesson10/function-call-inlining.md)
 - [VLIW](./lesson11/vliw.md)
 - [Cache](./lesson12/cache.md)
+- [Virtual Memory](./lesson13/virtual-memory.md)
